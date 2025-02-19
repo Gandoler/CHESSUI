@@ -23,8 +23,10 @@ namespace ChessUI
     /// </summary>
     public partial class MainWindow : Window, IChessView
     {
-        private readonly Image[,] pieceImages = new Image[8, 8];
-        private readonly Rectangle[,] highlights = new Rectangle[8, 8];
+
+        #region initAndGo
+        private readonly Image[,] pieceImages = new Image[8, 8]; //  это прост храниоище картинок тоже тута
+        private readonly Rectangle[,] highlights = new Rectangle[8, 8];  // это подсветка ее оставим тута
         private readonly Dictionary<Position, Move> moveCache = new();
         
         private readonly GameState _gameState;
@@ -39,13 +41,12 @@ namespace ChessUI
             {
                 throw new ArgumentNullException("on pustoi blyia");
             }
+            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
 
-            DrawBoard(_gameState.Board);
             SetCursor(_gameState.CurrentPlayer);
 
             
         }
-        #region EscMenu
         //нажатие клавиши  
         public event EventHandler<KeyEventArgs>? Window_KeyDownEsc;
         // нажатие рестарта игры
@@ -54,6 +55,31 @@ namespace ChessUI
         // случился геймовер
         public event Action? Game_Over_event;
 
+        public event Action? ReDrawBord;
+
+
+        // эта тема просто заполняет контейнерами для картинок щахмат
+        private void InitializeBoard()
+        {
+            for(int r = 0; r < 8; r++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    Image image = new Image();
+                    pieceImages[r, c] = image;
+                    PieceGrid.Children.Add(image);
+
+
+                    Rectangle highlight = new Rectangle();
+                    highlights[r,c] = highlight;
+                    HiglightGrid.Children.Add(highlight);
+                }
+            }
+        }
+
+        #endregion
+
+        #region EscMenu
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Window_KeyDownEsc?.Invoke(sender, e);
@@ -82,27 +108,10 @@ namespace ChessUI
 
 
 
-        // эта тема просто заполняет контейнерами для картинок щахмат
-        private void InitializeBoard()
-        {
-            for(int r = 0; r < 8; r++)
-            {
-                for (int c = 0; c < 8; c++)
-                {
-                    Image image = new Image();
-                    pieceImages[r, c] = image;
-                    PieceGrid.Children.Add(image);
+       
 
 
-                    Rectangle highlight = new Rectangle();
-                    highlights[r,c] = highlight;
-                    HiglightGrid.Children.Add(highlight);
-                }
-            }
-        }
-
-
-        private void DrawBoard(Board_Base board)
+        public void DrawBoard(Board_Base board)
         {
             for (int r = 0; r < 8; r++)
             {
@@ -173,7 +182,7 @@ namespace ChessUI
         private void HandleMove(Move move)
         {
            _gameState.MakeMove(move);
-            DrawBoard(_gameState.Board);
+            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
             SetCursor(_gameState.CurrentPlayer);
 
 
@@ -279,7 +288,7 @@ namespace ChessUI
             HideHighlights();
             moveCache.Clear();
             _gameState.Restart();
-            DrawBoard(_gameState.Board);
+            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
             SetCursor(_gameState.CurrentPlayer);
         }
 

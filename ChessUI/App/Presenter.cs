@@ -41,6 +41,17 @@ namespace ChessUI.Code
             _view.Game_Over_event += _view_Game_Over_event;
 
 
+            // Upate доски
+            _view.ReDrawBord += _view_ReDrawBord;
+
+        }
+
+
+
+        // Upate доски
+        private void _view_ReDrawBord()
+        {
+            _view.DrawBoard(_gameState.Board);
         }
 
 

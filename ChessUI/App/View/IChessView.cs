@@ -16,6 +16,7 @@ namespace ChessUI.Code.View
 
 
         public event Action Game_Over_event;
+        public event Action ReDrawBord;
 
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
@@ -23,5 +24,7 @@ namespace ChessUI.Code.View
 
         public void RestartGame();
         public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
+
+        public void DrawBoard(Board_Base board);
     }
 }
