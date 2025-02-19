@@ -47,7 +47,11 @@ namespace ChessUI
         #region EscMenu
         //нажатие клавиши  
         public event EventHandler<KeyEventArgs>? Window_KeyDownEsc;
+        // нажатие рестарта игры
         public event Action? RestartGame_Click;
+
+        // случился геймовер
+        public event Action? Game_Over_event;
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -174,7 +178,7 @@ namespace ChessUI
 
             if (gameState.isGameOver())
             {
-                ShowGameOver();
+                Game_Over_event?.Invoke();
             }
         }
 
@@ -245,9 +249,9 @@ namespace ChessUI
 
 
 
-        private void ShowGameOver()
+        public void ShowGameOver(GameOverMenu gameOverMenu)
         {
-            GameOverMenu gameOverMenu = new GameOverMenu(gameState);
+           
             MenuContainer.Content = gameOverMenu;
 
             gameOverMenu.OptionSelected += option =>

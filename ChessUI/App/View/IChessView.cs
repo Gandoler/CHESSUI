@@ -14,10 +14,14 @@ namespace ChessUI.Code.View
         public event EventHandler<KeyEventArgs> Window_KeyDownEsc;
         public event Action RestartGame_Click;
 
+
+        public event Action Game_Over_event;
+
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
 
 
-        public void RestartGame()
+        public void RestartGame();
+        public void ShowGameOver(GameOverMenu gameOverMenu)
     }
 }
