@@ -20,7 +20,7 @@ namespace ChessUI.Code
         private readonly GameState _gameState;
         private readonly PauseMent pauseMent;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
-        private Position selectedPos = null;
+        private Position? _selectedPos = null;
         public Presenter(IChessView chessView, GameState gameState)
         {
             // первый пупсик которого перенесли
@@ -32,7 +32,8 @@ namespace ChessUI.Code
             SolidColorBrush brush = new SolidColorBrush(color);
 
 
-
+            // отслеживание обсерверок
+            _view.SelectedPosChanged += _view_SelectedPosChanged;
 
 
             //подписка для обработчика клавиш
@@ -67,11 +68,17 @@ namespace ChessUI.Code
 
         }
 
+        // отслеживание обсерверок
+        private void _view_SelectedPosChanged(Position? position)
+        {
+            _selectedPos = position;
+        }
+
         private void _view_BoardGrid_MouseDownEvent(object? sender, Point point)
         {
             Position pos = _view.ToSquarePosition(point);
 
-            if (selectedPos == null)
+            if (_selectedPos == null)
             {
                 _view.OnFromPositionSelected(pos);
             }

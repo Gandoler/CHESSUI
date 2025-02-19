@@ -27,7 +27,8 @@ namespace ChessUI.Code.View
 
 
         public event Action ChangeCursor;
-
+        // для отслеживания что-то типо обсервера
+        public event Action<Position?>? SelectedPosChanged;
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
 

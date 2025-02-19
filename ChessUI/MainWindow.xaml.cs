@@ -30,7 +30,28 @@ namespace ChessUI
         private readonly Dictionary<Position, Move> moveCache = new();
         
         private readonly GameState _gameState;
-        private Position selectedPos = null;
+        #region observedSelectedPos
+        private Position? _selectedPos;
+
+        public Position? SelectedPos
+        {
+            get => _selectedPos;
+            set
+            {
+                if (_selectedPos != value)
+                {
+                    _selectedPos = value;
+                    OnSelectedPosChanged();
+                }
+            }
+        }
+
+        public event Action<Position?>? SelectedPosChanged;
+        #endregion
+        private void OnSelectedPosChanged()
+        {
+            SelectedPosChanged?.Invoke(_selectedPos);
+        }
         public MainWindow(GameState gameState)
         {
             InitializeComponent();
@@ -160,7 +181,7 @@ namespace ChessUI
 
         public void OnToPositionSelected(Position pos)
         {
-            selectedPos = null;
+            SelectedPos = null;
 
             UnShowHiighLight?.Invoke();
 
@@ -211,7 +232,7 @@ namespace ChessUI
 
             if (moves.Any())
             {
-                selectedPos = pos;
+                SelectedPos = pos;
                 CacheMoves(moves);  
                 ShowHighLight?.Invoke();
             }
@@ -296,7 +317,7 @@ namespace ChessUI
 
         public void RestartGame()
         {
-            selectedPos = null;
+            SelectedPos = null;
             UnShowHiighLight?.Invoke();
             moveCache.Clear();
             _gameState.Restart();
