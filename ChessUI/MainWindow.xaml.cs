@@ -27,33 +27,12 @@ namespace ChessUI
         #region initAndGo
         private readonly Image[,] pieceImages = new Image[8, 8]; //  это прост храниоище картинок тоже тута
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];  // это подсветка ее оставим тута
-        private readonly Dictionary<Position, Move> moveCache = new();
 
 
         
         private readonly GameState _gameState;
-        #region observedSelectedPos
-        private Position? _selectedPos;
-
-        public Position? SelectedPos
-        {
-            get => _selectedPos;
-            set
-            {
-                if (_selectedPos != value)
-                {
-                    _selectedPos = value;
-                    OnSelectedPosChanged();
-                }
-            }
-        }
-
-        public event Action<Position?>? SelectedPosChanged;
-        #endregion
-        private void OnSelectedPosChanged()
-        {
-            SelectedPosChanged?.Invoke(_selectedPos);
-        }
+      
+    
         public MainWindow(GameState gameState)
         {
             InitializeComponent();
@@ -171,25 +150,8 @@ namespace ChessUI
 
         }
 
-        public void OnToPositionSelected(Position pos)
-        {
-            SelectedPos = null;
-
-            UnShowHiighLight?.Invoke();
-
-            if (moveCache.TryGetValue(pos, out Move move)) 
-            {
-                if (move.Type == MoveType.PawnPromotion)
-                {
-                    HandlePromotion(move.FromPos, move.ToPos);
-                }
-                else 
-                {
-                    HandleMove(move);
-                }
-            }
-        }
-
+       
+        public event Action<Move> Tempevent;
         public void HandlePromotion(Position from, Position to)
         {
             pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(_gameState.CurrentPlayer, PieceType.Pawn);
@@ -202,34 +164,12 @@ namespace ChessUI
             {
                 MenuContainer.Content = null;
                 Move promMove = new PawnPromotion(from, to, type);
-                HandleMove(promMove);
+                Tempevent?.Invoke(promMove);
+                
             };
         }
 
-        public void HandleMove(Move move)
-        {
-           _gameState.MakeMove(move);
-            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
-            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
-
-            if (_gameState.isGameOver())
-            {
-                Game_Over_event?.Invoke();
-            }
-        }
-
-        public void OnFromPositionSelected(Position pos)
-        {
-            IEnumerable<Move> moves = _gameState.LegalMovesForPiece(pos);
-
-            if (moves.Any())
-            {
-                SelectedPos = pos;
-                CacheMoves(moves);  
-                ShowHighLight?.Invoke();
-            }
-
-        }
+       
 
         public Position ToSquarePosition(Point point)
         {
@@ -240,16 +180,7 @@ namespace ChessUI
             return new Position(row, col);
         }
 
-        private void CacheMoves(IEnumerable<Move> moves)
-        {
-            moveCache.Clear();
-
-            foreach (var VARIABLE in moves)
-            {
-                moveCache[VARIABLE.ToPos] = VARIABLE;
-            }
-        }
-
+       
 
         #region design
         public void SetCursor(Player player)
@@ -263,23 +194,7 @@ namespace ChessUI
                 Cursor = ChessCursors.BlackCursor;
             }
         }
-        public void ShowHighlights(SolidColorBrush brush) // включает подсветку
-        {
-           
-
-            foreach (var pos in moveCache.Keys)
-            {
-                highlights[pos.Row, pos.Column].Fill = brush;
-            }
-        }
-
-        public void HideHighlights()// выключает подсветку
-        {
-            foreach (var pos in moveCache.Keys)
-            {
-                highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
-            }
-        }
+     
 
 
         public void ShowHighlights(SolidColorBrush brush, Dictionary<Position, Move> keyValuePairs) // включает подсветку
@@ -329,24 +244,13 @@ namespace ChessUI
 
         public void RestartGame()
         {
-            SelectedPos = null;
             UnShowHiighLight?.Invoke();
-            moveCache.Clear();
             _gameState.Restart();
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
             ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
             
         }
-        public void RestartGame(Dictionary<Position, Move> keyValuePairs)
-        {
-            SelectedPos = null;
-            UnShowHiighLight?.Invoke();
-            keyValuePairs.Clear();
-            _gameState.Restart();
-            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
-            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
-
-        }
+       
 
         #endregion restartgame
 

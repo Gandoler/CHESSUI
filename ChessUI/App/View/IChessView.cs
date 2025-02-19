@@ -27,10 +27,11 @@ namespace ChessUI.Code.View
 
 
         public event Action ChangeCursor;
-        // для отслеживания что-то типо обсервера
-        public event Action<Position?>? SelectedPosChanged;
+      
 
 
+        // временная щатычка енадо ьбыть аккуратным!!!!!!!!
+        public event Action<Move> Tempevent;
 
 
         public bool isMenuOnScreeen();
@@ -38,15 +39,13 @@ namespace ChessUI.Code.View
 
 
         public void RestartGame();
-        public void RestartGame(Dictionary<Position, Move> keyValuePairs);
+        //public void RestartGame(Dictionary<Position, Move> keyValuePairs);
         public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
 
         public void DrawBoard(Board_Base board);
 
 
-        public void ShowHighlights(SolidColorBrush brush); // включает подсветку
         public void ShowHighlights(SolidColorBrush brush, Dictionary<Position, Move> keyValuePairs);
-        public void HideHighlights();// выключает подсветку
         public void HideHighlights(Dictionary<Position, Move> keyValuePairs);
 
         public void SetCursor(Player player);
@@ -54,10 +53,10 @@ namespace ChessUI.Code.View
 
 
         // группа по нажатию на клетку
-        public void OnToPositionSelected(Position pos);
+        //public void OnToPositionSelected(Position pos);
         public void HandlePromotion(Position from, Position to);
-        public void HandleMove(Move move);
-        public void OnFromPositionSelected(Position pos);
+        //public void HandleMove(Move move);
+        //public void OnFromPositionSelected(Position pos);
         public Position ToSquarePosition(Point point);
     }
 }

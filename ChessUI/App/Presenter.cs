@@ -23,6 +23,7 @@ namespace ChessUI.Code
         private Lazy<GameOverMenu> _lazyGameOverMenu;
         private Position? _selectedPos = null;
         SolidColorBrush brush;
+        private readonly Dictionary<Position, Move> moveCache = new();
 
 
         public Presenter(IChessView chessView, GameState gameState)
@@ -36,16 +37,17 @@ namespace ChessUI.Code
             brush = new SolidColorBrush(color);
 
 
-            // отслеживание обсерверок
-            _view.SelectedPosChanged += _view_SelectedPosChanged;
-
 
             //подписка для обработчика клавиш
             _view.Window_KeyDownEsc += _view_Window_KeyDown;
 
 
             //подписка для рестарта игры
-            _view.RestartGame_Click += () => _view.RestartGame(); 
+            _view.RestartGame_Click += () => {
+                _selectedPos = null;
+                moveCache.Clear();
+                _view.RestartGame(); 
+            };
 
             // gameOver 
             _view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
@@ -56,11 +58,11 @@ namespace ChessUI.Code
 
 
             //включение подсветки
-            _view.ShowHighLight +=()=> _view.ShowHighlights(brush);
+            _view.ShowHighLight +=()=> _view.ShowHighlights(brush, moveCache);
 
 
             //выключенеи подсветки
-            _view.UnShowHiighLight += () => _view.HideHighlights();
+            _view.UnShowHiighLight += () => _view.HideHighlights(moveCache);
 
             //изменение курсора 
             _view.ChangeCursor += () => _view.SetCursor(_gameState.CurrentPlayer);
@@ -68,15 +70,27 @@ namespace ChessUI.Code
             //при нажатии на клекту
             _view.BoardGrid_MouseDownEvent += _view_BoardGrid_MouseDownEvent;
 
-
+            // временнннннная !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            _view.Tempevent += (Move v) => HandleMove(v);
 
         }
 
-        // отслеживание обсерверок
-        private void _view_SelectedPosChanged(Position? position)
+       
+        
+
+       
+
+        // нажатие на esc
+        private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
         {
-            _selectedPos = position;
+            if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)
+            {
+                _view.ShowPauseMenu(pauseMent);
+            }
         }
+
+
+        #region MouseHandler
         // обратоька нгажатия мыши
 
         private void _view_BoardGrid_MouseDownEvent(object? sender, Point point)
@@ -93,22 +107,6 @@ namespace ChessUI.Code
             }
         }
 
-
-        
-
-       
-
-        // нажатие на esc
-        private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)
-            {
-                _view.ShowPauseMenu(pauseMent);
-            }
-        }
-
-
-        private readonly Dictionary<Position, Move> moveCache = new();
 
         // попытка перенести мув кеш
         private void CacheMoves(IEnumerable<Move> moves)
@@ -166,6 +164,10 @@ namespace ChessUI.Code
 
             }
         }
+
+
+
+        #endregion 
 
     }
 }
