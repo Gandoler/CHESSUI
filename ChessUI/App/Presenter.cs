@@ -22,7 +22,9 @@ namespace ChessUI.Code
         private readonly PauseMent pauseMent;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
         private Position? _selectedPos = null;
-       
+        SolidColorBrush brush;
+
+
         public Presenter(IChessView chessView, GameState gameState)
         {
             // первый пупсик которого перенесли
@@ -31,7 +33,7 @@ namespace ChessUI.Code
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
             _view = chessView;
             Color color = Color.FromArgb(150, 125, 255, 125);
-            SolidColorBrush brush = new SolidColorBrush(color);
+            brush = new SolidColorBrush(color);
 
 
             // отслеживание обсерверок
@@ -83,20 +85,60 @@ namespace ChessUI.Code
 
             if (_selectedPos == null)
             {
-                _view.OnFromPositionSelected(pos);
+                OnFromPositionSelected(pos);
             }
             else
             {
-                _view.OnToPositionSelected(pos);
+                OnToPositionSelected(pos);
             }
         }
 
+
+        
+
+       
+
+        // нажатие на esc
+        private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)
+            {
+                _view.ShowPauseMenu(pauseMent);
+            }
+        }
+
+
+        private readonly Dictionary<Position, Move> moveCache = new();
+
+        // попытка перенести мув кеш
+        private void CacheMoves(IEnumerable<Move> moves)
+        {
+            moveCache.Clear();
+
+            foreach (var VARIABLE in moves)
+            {
+                moveCache[VARIABLE.ToPos] = VARIABLE;
+            }
+        }
+
+        public void OnFromPositionSelected(Position pos)
+        {
+            IEnumerable<Move> moves = _gameState.LegalMovesForPiece(pos);
+
+            if (moves.Any())
+            {
+                _selectedPos = pos;
+                CacheMoves(moves);
+                _view.ShowHighlights(brush, moveCache);
+            }
+
+        }
 
         public void OnToPositionSelected(Position pos)
         {
             _selectedPos = null;
 
-            _view.HideHighlights();
+            _view.HideHighlights(moveCache);
 
             if (moveCache.TryGetValue(pos, out Move move))
             {
@@ -116,28 +158,14 @@ namespace ChessUI.Code
             _gameState.MakeMove(move);
             _view.DrawBoard(_gameState.Board);
             _view.SetCursor(_gameState.CurrentPlayer);
-           
+
 
             if (_gameState.isGameOver())
             {
                 _view.RestartGame();
-               
+
             }
         }
-
-       
-
-        // нажатие на esc
-        private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)
-            {
-                _view.ShowPauseMenu(pauseMent);
-            }
-        }
-
-
-
 
     }
 }

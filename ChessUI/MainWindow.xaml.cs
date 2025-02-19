@@ -177,7 +177,7 @@ namespace ChessUI
 
             UnShowHiighLight?.Invoke();
 
-            if (moveCache.TryGetValue(pos, out Move move))
+            if (moveCache.TryGetValue(pos, out Move move)) 
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
@@ -280,6 +280,26 @@ namespace ChessUI
                 highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
             }
         }
+
+
+        public void ShowHighlights(SolidColorBrush brush, Dictionary<Position, Move> keyValuePairs) // включает подсветку
+        {
+
+
+            foreach (var pos in keyValuePairs.Keys)
+            {
+                highlights[pos.Row, pos.Column].Fill = brush;
+            }
+        }
+
+        public void HideHighlights(Dictionary<Position, Move> keyValuePairs)// выключает подсветку
+        {
+            foreach (var pos in keyValuePairs.Keys)
+            {
+                highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
+            }
+        }
+
         #endregion
 
 
@@ -316,6 +336,16 @@ namespace ChessUI
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
             ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
             
+        }
+        public void RestartGame(Dictionary<Position, Move> keyValuePairs)
+        {
+            SelectedPos = null;
+            UnShowHiighLight?.Invoke();
+            keyValuePairs.Clear();
+            _gameState.Restart();
+            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
+            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
+
         }
 
         #endregion restartgame
