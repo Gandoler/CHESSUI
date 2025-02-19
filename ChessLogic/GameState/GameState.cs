@@ -100,5 +100,12 @@ namespace ChessLogic.GameState
             int fullMoves = noCapptureOrPawnMoves / 2;
             return fullMoves == 50;
         }
+
+        // тут просто переиницализация
+        public void Restart()
+        {
+            CurrentPlayer = Player.White;
+            Board = Board_Base.initial();
+        }
     }
 }

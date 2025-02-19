@@ -22,6 +22,6 @@ namespace ChessUI.Code.View
 
 
         public void RestartGame();
-        public void ShowGameOver(GameOverMenu gameOverMenu)
+        public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
     }
 }

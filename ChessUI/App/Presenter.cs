@@ -15,17 +15,15 @@ namespace ChessUI.Code
     internal class Presenter
     {
         private readonly IChessView _view;
-        private GameState gameState;
+        private readonly GameState _gameState;
         private readonly PauseMent pauseMent;
-        private readonly GameOverMenu gameOverMenu;
-
-        public Presenter(IChessView chessView)
+        private Lazy<GameOverMenu> _lazyGameOverMenu;
+        public Presenter(IChessView chessView, GameState gameState)
         {
             // первый пупсик которого перенесли
-            gameState = new GameState(Player.White, Board_Base.initial());
+            _gameState = gameState;
             pauseMent = new PauseMent();
-            gameOverMenu = new GameOverMenu(gameState);
-
+            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
             _view = chessView;
 
 
@@ -49,7 +47,7 @@ namespace ChessUI.Code
         // случился gameover
         private void _view_Game_Over_event()
         {
-            _view.ShowGameOver(gameOverMenu);
+            _view.ShowGameOver(_lazyGameOverMenu);
         }
 
         //перезапуск игры

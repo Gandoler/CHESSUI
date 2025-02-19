@@ -1,4 +1,6 @@
-﻿using ChessUI.Code;
+﻿using ChessLogic.Boardik;
+using ChessLogic.GameState;
+using ChessUI.Code;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -14,13 +16,14 @@ namespace ChessUI
         {
             base.OnStartup(e);
 
-            var chessWindow = new MainWindow();
 
-            if (chessWindow.IsLoaded)
-            {
+            GameState gameState = new GameState(ChessLogic.Player.White, Board_Base.initial());
 
-                var presenter = new Presenter(chessWindow);
-            }
+            var chessWindow = new MainWindow(gameState);
+            
+
+                var presenter = new Presenter(chessWindow, gameState);
+            
             chessWindow.Show();
 
         }

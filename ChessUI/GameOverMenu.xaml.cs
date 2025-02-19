@@ -2,6 +2,7 @@
 using ChessLogic.GameState;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,9 +30,13 @@ namespace ChessUI
 
 
             Result result = gameState.Result;
+
+            if (result == null) { throw new Exception("Пустой кент"); }
             WinnerText.Text = GetWinnerText(result.Winner);
             ReasonText.Text = GetReasonText(result.Reason, gameState.CurrentPlayer);
         }
+
+        
 
 
         private static string GetWinnerText(Player winner)

@@ -27,20 +27,21 @@ namespace ChessUI
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];
         private readonly Dictionary<Position, Move> moveCache = new();
         
-        private GameState gameState;
+        private readonly GameState _gameState;
         private Position selectedPos = null;
-        public MainWindow()
+        public MainWindow(GameState gameState)
         {
             InitializeComponent();
             InitializeBoard();
 
-            if (gameState == null)
+           _gameState = gameState;
+            if(_gameState == null)
             {
-                gameState = new GameState(Player.White, Board_Base.initial());
+                throw new ArgumentNullException("on pustoi blyia");
             }
 
-            DrawBoard(gameState.Board);
-            SetCursor(gameState.CurrentPlayer);
+            DrawBoard(_gameState.Board);
+            SetCursor(_gameState.CurrentPlayer);
 
             
         }
@@ -155,10 +156,10 @@ namespace ChessUI
 
         private void HandlePromotion(Position from, Position to)
         {
-            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(gameState.CurrentPlayer, PieceType.Pawn);
+            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(_gameState.CurrentPlayer, PieceType.Pawn);
             pieceImages[from.Row, from.Column].Source = null;
 
-            PromotionMenu promMenu = new PromotionMenu(gameState.CurrentPlayer);
+            PromotionMenu promMenu = new PromotionMenu(_gameState.CurrentPlayer);
             MenuContainer.Content = promMenu;
 
             promMenu.PieceSelected += type =>
@@ -171,12 +172,12 @@ namespace ChessUI
 
         private void HandleMove(Move move)
         {
-           gameState.MakeMove(move);
-            DrawBoard(gameState.Board);
-            SetCursor(gameState.CurrentPlayer);
+           _gameState.MakeMove(move);
+            DrawBoard(_gameState.Board);
+            SetCursor(_gameState.CurrentPlayer);
 
 
-            if (gameState.isGameOver())
+            if (_gameState.isGameOver())
             {
                 Game_Over_event?.Invoke();
             }
@@ -184,7 +185,7 @@ namespace ChessUI
 
         private void OnFromPositionSelected(Position pos)
         {
-            IEnumerable<Move> moves = gameState.LegalMovesForPiece(pos);
+            IEnumerable<Move> moves = _gameState.LegalMovesForPiece(pos);
 
             if (moves.Any())
             {
@@ -248,13 +249,13 @@ namespace ChessUI
 
 
 
-
-        public void ShowGameOver(GameOverMenu gameOverMenu)
+        #region gameend
+        public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu)
         {
-           
-            MenuContainer.Content = gameOverMenu;
+            GameOverMenu foruse = gameOverMenu.Value;
+            MenuContainer.Content = foruse;
 
-            gameOverMenu.OptionSelected += option =>
+            foruse.OptionSelected += option =>
             {
                 if (option == Option.Restart)
                 {
@@ -268,6 +269,7 @@ namespace ChessUI
                 }
             };
         }
+        #endregion
 
         #region RestatrGame
 
@@ -276,9 +278,9 @@ namespace ChessUI
             selectedPos = null;
             HideHighlights();
             moveCache.Clear();
-            gameState = new GameState(Player.White, Board_Base.initial());
-            DrawBoard(gameState.Board);
-            SetCursor(gameState.CurrentPlayer);
+            _gameState.Restart();
+            DrawBoard(_gameState.Board);
+            SetCursor(_gameState.CurrentPlayer);
         }
 
         #endregion restartgame
