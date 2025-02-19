@@ -1,5 +1,6 @@
 ﻿using ChessLogic;
 using ChessLogic.Pieces;
+using ChessUI.Singletons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
