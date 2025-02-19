@@ -75,10 +75,17 @@ namespace ChessUI.Code
 
         }
 
-       
-        
 
-       
+
+        public void RestartGame()
+        {
+            _view.HideHighlights(moveCache);
+            _gameState.Restart();
+            _view.DrawBoard(_gameState.Board);
+            _view.SetCursor(_gameState.CurrentPlayer);
+
+        }
+
 
         // нажатие на esc
         private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
@@ -160,7 +167,7 @@ namespace ChessUI.Code
 
             if (_gameState.isGameOver())
             {
-                _view.RestartGame();
+                RestartGame();
 
             }
         }

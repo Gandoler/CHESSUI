@@ -38,8 +38,7 @@ namespace ChessUI.Code.View
         public void ShowPauseMenu(PauseMent pauseMenu);
 
 
-        public void RestartGame();
-        //public void RestartGame(Dictionary<Position, Move> keyValuePairs);
+   
         public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
 
         public void DrawBoard(Board_Base board);

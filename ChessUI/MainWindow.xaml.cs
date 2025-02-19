@@ -45,6 +45,8 @@ namespace ChessUI
             this.MouseEnter += MainWindow_MouseEnter;
             
         }
+
+
         //при первом попадании мыши подгруз
         private void MainWindow_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -240,21 +242,7 @@ namespace ChessUI
         }
         #endregion
 
-        #region RestatrGame
-
-        public void RestartGame()
-        {
-            UnShowHiighLight?.Invoke();
-            _gameState.Restart();
-            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
-            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
-            
-        }
        
-
-        #endregion restartgame
-
-
 
 
     }
