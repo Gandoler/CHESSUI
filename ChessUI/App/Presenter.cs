@@ -25,8 +25,19 @@ namespace ChessUI.Code
             _view.Window_KeyDownEsc += _view_Window_KeyDown;
 
 
+            //подписка для рестарта игры
+            _view.RestartGame_Click += _view_RestartGame_Click;
+
+
+        }
+        //перезапуск игры
+        private void _view_RestartGame_Click()
+        {
+            _view.RestartGame();
         }
 
+
+        // нажатие на esc
         private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)
         {
             if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)

@@ -47,6 +47,8 @@ namespace ChessUI
         #region EscMenu
         //нажатие клавиши  
         public event EventHandler<KeyEventArgs>? Window_KeyDownEsc;
+        public event Action? RestartGame_Click;
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Window_KeyDownEsc?.Invoke(sender, e);
@@ -62,7 +64,7 @@ namespace ChessUI
                 MenuContainer.Content = null;
                 if (option == Option.Restart)
                 {
-                    RestartGame();
+                    RestartGame_Click?.Invoke();
                 }
             };
         }
@@ -253,7 +255,8 @@ namespace ChessUI
                 if (option == Option.Restart)
                 {
                     MenuContainer.Content = null;
-                    RestartGame();
+                    RestartGame_Click?.Invoke();
+                    
                 }
                 else
                 {
@@ -262,7 +265,9 @@ namespace ChessUI
             };
         }
 
-        private void RestartGame()
+        #region RestatrGame
+
+        public void RestartGame()
         {
             selectedPos = null;
             HideHighlights();
@@ -272,10 +277,10 @@ namespace ChessUI
             SetCursor(gameState.CurrentPlayer);
         }
 
+        #endregion restartgame
 
 
-       
 
-       
+
     }
 }

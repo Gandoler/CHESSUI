@@ -16,5 +16,8 @@ namespace ChessUI.Code.View
 
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
+
+
+        public void RestartGame()
     }
 }
