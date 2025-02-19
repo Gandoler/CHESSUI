@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Net.Http.Headers;
 using System.Windows.Media;
 using System.Windows;
+using ChessLogic.Moves;
 
 namespace ChessUI.Code
 {
@@ -21,6 +22,7 @@ namespace ChessUI.Code
         private readonly PauseMent pauseMent;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
         private Position? _selectedPos = null;
+       
         public Presenter(IChessView chessView, GameState gameState)
         {
             // первый пупсик которого перенесли
@@ -73,6 +75,7 @@ namespace ChessUI.Code
         {
             _selectedPos = position;
         }
+        // обратоька нгажатия мыши
 
         private void _view_BoardGrid_MouseDownEvent(object? sender, Point point)
         {
@@ -89,12 +92,40 @@ namespace ChessUI.Code
         }
 
 
+        public void OnToPositionSelected(Position pos)
+        {
+            _selectedPos = null;
 
+            _view.HideHighlights();
 
+            if (moveCache.TryGetValue(pos, out Move move))
+            {
+                if (move.Type == MoveType.PawnPromotion)
+                {
+                    _view.HandlePromotion(move.FromPos, move.ToPos);
+                }
+                else
+                {
+                    HandleMove(move);
+                }
+            }
+        }
 
+        public void HandleMove(Move move)
+        {
+            _gameState.MakeMove(move);
+            _view.DrawBoard(_gameState.Board);
+            _view.SetCursor(_gameState.CurrentPlayer);
+           
 
+            if (_gameState.isGameOver())
+            {
+                _view.RestartGame();
+               
+            }
+        }
 
-
+       
 
         // нажатие на esc
         private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)

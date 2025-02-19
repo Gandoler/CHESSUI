@@ -28,6 +28,8 @@ namespace ChessUI
         private readonly Image[,] pieceImages = new Image[8, 8]; //  это прост храниоище картинок тоже тута
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];  // это подсветка ее оставим тута
         private readonly Dictionary<Position, Move> moveCache = new();
+
+
         
         private readonly GameState _gameState;
         #region observedSelectedPos
@@ -156,7 +158,7 @@ namespace ChessUI
 
 
 
-
+        // обратоька нгажатия мыши
         public void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
@@ -167,16 +169,6 @@ namespace ChessUI
             Point point = e.GetPosition(BoardGrid);
             BoardGrid_MouseDownEvent?.Invoke(sender, point);
 
-            //Position pos = ToSquarePosition(point);
-
-            //if(selectedPos == null)
-            //{
-            //    OnFromPositionSelected(pos);
-            //}
-            //else
-            //{
-            //    OnToPositionSelected(pos);
-            //}
         }
 
         public void OnToPositionSelected(Position pos)
