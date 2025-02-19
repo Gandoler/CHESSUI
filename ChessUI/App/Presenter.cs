@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Net.Http.Headers;
 using System.Windows.Media;
+using System.Windows;
 
 namespace ChessUI.Code
 {
@@ -19,6 +20,7 @@ namespace ChessUI.Code
         private readonly GameState _gameState;
         private readonly PauseMent pauseMent;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
+        private Position selectedPos = null;
         public Presenter(IChessView chessView, GameState gameState)
         {
             // первый пупсик которого перенесли
@@ -56,19 +58,36 @@ namespace ChessUI.Code
             _view.UnShowHiighLight += () => _view.HideHighlights();
 
             //изменение курсора 
-            _view.ChangeCursor += (Player p) => _view.SetCursor(p);
+            _view.ChangeCursor += () => _view.SetCursor(_gameState.CurrentPlayer);
+
+            //при нажатии на клекту
+            _view.BoardGrid_MouseDownEvent += _view_BoardGrid_MouseDownEvent;
 
 
 
         }
 
+        private void _view_BoardGrid_MouseDownEvent(object? sender, Point point)
+        {
+            Position pos = _view.ToSquarePosition(point);
+
+            if (selectedPos == null)
+            {
+                _view.OnFromPositionSelected(pos);
+            }
+            else
+            {
+                _view.OnToPositionSelected(pos);
+            }
+        }
 
 
-       
 
 
-       
-       
+
+
+
+
 
         // нажатие на esc
         private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)

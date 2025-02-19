@@ -39,13 +39,14 @@ namespace ChessUI
 
            _gameState = gameState;
 
-            SetCursor(_gameState.CurrentPlayer);
+           
             this.MouseEnter += MainWindow_MouseEnter;
             
         }
         //при первом попадании мыши подгруз
         private void MainWindow_MouseEnter(object sender, MouseEventArgs e)
         {
+            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
         }
 
@@ -64,7 +65,9 @@ namespace ChessUI
         public event Action? UnShowHiighLight;
         
         // изменение курсора 
-        public event Action<Player>? ChangeCursor;
+        public event Action? ChangeCursor;
+        //при нажатии на клекту
+        public event EventHandler<Point>? BoardGrid_MouseDownEvent;
 
 
         // эта тема просто заполняет контейнерами для картинок щахмат
@@ -128,32 +131,34 @@ namespace ChessUI
 
 
 
-       
 
 
 
 
-        private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
+
+        public void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+
             if (isMenuOnScreeen())
             {
                 return;
             }
-
             Point point = e.GetPosition(BoardGrid);
-            Position pos = ToSquarePosition(point);
+            BoardGrid_MouseDownEvent?.Invoke(sender, point);
 
-            if(selectedPos == null)
-            {
-                OnFromPositionSelected(pos);
-            }
-            else
-            {
-                OnToPositionSelected(pos);
-            }
+            //Position pos = ToSquarePosition(point);
+
+            //if(selectedPos == null)
+            //{
+            //    OnFromPositionSelected(pos);
+            //}
+            //else
+            //{
+            //    OnToPositionSelected(pos);
+            //}
         }
 
-        private void OnToPositionSelected(Position pos)
+        public void OnToPositionSelected(Position pos)
         {
             selectedPos = null;
 
@@ -172,7 +177,7 @@ namespace ChessUI
             }
         }
 
-        private void HandlePromotion(Position from, Position to)
+        public void HandlePromotion(Position from, Position to)
         {
             pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(_gameState.CurrentPlayer, PieceType.Pawn);
             pieceImages[from.Row, from.Column].Source = null;
@@ -188,12 +193,11 @@ namespace ChessUI
             };
         }
 
-        private void HandleMove(Move move)
+        public void HandleMove(Move move)
         {
            _gameState.MakeMove(move);
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
-            SetCursor(_gameState.CurrentPlayer);
-
+            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
 
             if (_gameState.isGameOver())
             {
@@ -201,7 +205,7 @@ namespace ChessUI
             }
         }
 
-        private void OnFromPositionSelected(Position pos)
+        public void OnFromPositionSelected(Position pos)
         {
             IEnumerable<Move> moves = _gameState.LegalMovesForPiece(pos);
 
@@ -214,7 +218,7 @@ namespace ChessUI
 
         }
 
-        private Position ToSquarePosition(Point point)
+        public Position ToSquarePosition(Point point)
         {
             double squareSize = BoardGrid.ActualHeight / 8;
             int row = (int)(point.Y / squareSize);
@@ -233,6 +237,8 @@ namespace ChessUI
             }
         }
 
+
+        #region design
         public void SetCursor(Player player)
         {
             if (player == Player.White)
@@ -244,8 +250,6 @@ namespace ChessUI
                 Cursor = ChessCursors.BlackCursor;
             }
         }
-
-        #region design
         public void ShowHighlights(SolidColorBrush brush) // включает подсветку
         {
            
@@ -297,8 +301,8 @@ namespace ChessUI
             moveCache.Clear();
             _gameState.Restart();
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
-
-            SetCursor(_gameState.CurrentPlayer);
+            ChangeCursor?.Invoke();// было SetCursor(_gameState.CurrentPlayer);
+            
         }
 
         #endregion restartgame
