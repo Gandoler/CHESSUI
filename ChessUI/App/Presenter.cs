@@ -43,11 +43,7 @@ namespace ChessUI.Code
 
 
             //подписка для рестарта игры
-            _view.RestartGame_Click += () => {
-                _selectedPos = null;
-                moveCache.Clear();
-                _view.RestartGame(); 
-            };
+            _view.RestartGame_Click += ()=>RestartGame();
 
             // gameOver 
             _view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
@@ -79,6 +75,8 @@ namespace ChessUI.Code
 
         public void RestartGame()
         {
+            _selectedPos = null;
+            moveCache.Clear();
             _view.HideHighlights(moveCache);
             _gameState.Restart();
             _view.DrawBoard(_gameState.Board);
