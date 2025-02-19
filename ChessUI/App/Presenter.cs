@@ -55,6 +55,9 @@ namespace ChessUI.Code
             //выключенеи подсветки
             _view.UnShowHiighLight += () => _view.HideHighlights();
 
+            //изменение курсора 
+            _view.ChangeCursor += (Player p) => _view.SetCursor(p);
+
 
 
         }

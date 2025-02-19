@@ -23,7 +23,7 @@ namespace ChessUI.Code.View
         public event Action UnShowHiighLight;
 
 
-        public event Action ChangeCursor;
+        public event Action<Player> ChangeCursor;
 
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
@@ -37,5 +37,7 @@ namespace ChessUI.Code.View
 
         public void ShowHighlights(SolidColorBrush brush); // включает подсветку
         public void HideHighlights();// выключает подсветку
+
+        public void SetCursor(Player player);
     }
 }

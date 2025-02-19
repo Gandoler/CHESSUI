@@ -64,7 +64,7 @@ namespace ChessUI
         public event Action? UnShowHiighLight;
         
         // изменение курсора 
-        public event Action? ChangeCursor;
+        public event Action<Player>? ChangeCursor;
 
 
         // эта тема просто заполняет контейнерами для картинок щахмат
@@ -233,7 +233,7 @@ namespace ChessUI
             }
         }
 
-        private void SetCursor(Player player)
+        public void SetCursor(Player player)
         {
             if (player == Player.White)
             {
@@ -297,6 +297,7 @@ namespace ChessUI
             moveCache.Clear();
             _gameState.Restart();
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
+
             SetCursor(_gameState.CurrentPlayer);
         }
 
