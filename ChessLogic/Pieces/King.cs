@@ -1,4 +1,5 @@
 ﻿using ChessLogic.Moves;
+using ChessLogic.Boardik;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace ChessLogic.Pieces
             this.Color = Color;
         }
 
-        private static bool IsUnmovedRook(Position pos, Board board)
+        private static bool IsUnmovedRook(Position pos, Board_Base board)
         {
             if (board.isEmpty(pos))
             {
@@ -41,12 +42,12 @@ namespace ChessLogic.Pieces
             return piece.Type == PieceType.Rook && !piece.HasMoved;
         }
 
-        private static bool AllEmpty(IEnumerable<Position> positions, Board board)
+        private static bool AllEmpty(IEnumerable<Position> positions, Board_Base board)
         {
             return positions.All(pos => board.isEmpty(pos));
         }
 
-        private bool CanCastleKingSide(Position from, Board board)
+        private bool CanCastleKingSide(Position from, Board_Base board)
         {
             if (HasMoved)
             {
@@ -59,7 +60,7 @@ namespace ChessLogic.Pieces
         }
 
 
-        private bool CanCastleQueenSide(Position from, Board board)
+        private bool CanCastleQueenSide(Position from, Board_Base board)
         {
             if (HasMoved)
             {
@@ -79,13 +80,13 @@ namespace ChessLogic.Pieces
             return copy;
         }
 
-        private IEnumerable<Position> MovePositions(Position from, Board board)
+        private IEnumerable<Position> MovePositions(Position from, Board_Base board)
         {
             foreach (Direction dir in dirs)
             {
                 Position to = from + dir;
 
-                if (!Board.IsInside(to))
+                if (!Board_Base.IsInside(to))
                 {
                     continue;
                 }
@@ -98,7 +99,7 @@ namespace ChessLogic.Pieces
         }
 
 
-        public override IEnumerable<Move> GetMoves(Position from, Board board)
+        public override IEnumerable<Move> GetMoves(Position from, Board_Base board)
         {
             foreach (Position to in MovePositions(from, board))
             {
@@ -115,7 +116,7 @@ namespace ChessLogic.Pieces
             }
         }
 
-        public override bool CanCaptureOpponentKing(Position from, Board board)
+        public override bool CanCaptureOpponentKing(Position from, Board_Base board)
         {
             return MovePositions(from, board)
                 .Select(to => board[to])

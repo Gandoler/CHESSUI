@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessLogic.Boardik;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace ChessLogic.Moves
 
 
 
-        public override bool Execute(Board board)
+        public override bool Execute(Board_Base board)
         {
             var kingMove = new NormalMove(FromPos, ToPos);
             kingMove.Execute(board);
@@ -50,7 +51,7 @@ namespace ChessLogic.Moves
             return false;
         }
 
-        public override bool IsLegal(Board board)
+        public override bool IsLegal(Board_Base board)
         {
             Player player = board[FromPos].Color;
 
@@ -59,7 +60,7 @@ namespace ChessLogic.Moves
                 return false;
             }
 
-            Board copy = board.Copy();
+            Board_Base copy = board.Copy();
             Position kingPosInCopy = FromPos;
 
             for (int i = 0; i < 2; i++)

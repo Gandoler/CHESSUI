@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChessLogic.Boardik;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace ChessLogic.Moves
             capturePos = new Position(from.Row, to.Column);
         }
 
-        public override bool Execute(Board board)
+        public override bool Execute(Board_Base board)
         {
             new NormalMove(FromPos, ToPos).Execute(board);
             board[capturePos] = null;

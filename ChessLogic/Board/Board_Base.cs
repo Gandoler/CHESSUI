@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessLogic
+namespace ChessLogic.Boardik
 {
-    public class Board
+    public class Board_Base
     {
         private readonly Piece[,] pieces = new Piece[8, 8];
 
@@ -41,9 +41,9 @@ namespace ChessLogic
         }
 
 
-        public static Board initial()
+        public static Board_Base initial()
         {
-            Board board = new Board();
+            Board_Base board = new Board_Base();
             board.AddStartPieses();
             return board;
         }
@@ -119,9 +119,9 @@ namespace ChessLogic
             });
         }
 
-        public Board Copy()
+        public Board_Base Copy()
         {
-            Board copy = new Board();
+            Board_Base copy = new Board_Base();
 
             foreach (Position pos in PiecePositions())
             {
@@ -152,12 +152,12 @@ namespace ChessLogic
                 IsKingKnightVKing(counting) || IsKingBishopVKingBishop(counting);
         }
 
-        
+
         private static bool IsKingVKing(Counting counting)
         {
             return counting.TotalCount == 2;
         }
-        
+
         private static bool IsKingBishopVKing(Counting counting)
         {
             return counting.TotalCount == 3 && (counting.White(PieceType.Bishop) == 1 || counting.Black(PieceType.Bishop) == 1);

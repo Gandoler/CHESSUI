@@ -12,13 +12,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChessLogic.Moves;
 using ChessUI.Singletons;
+using ChessLogic.GameState;
+using ChessLogic.Boardik;
+using ChessUI.Code.View;
 
 namespace ChessUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IChessView
     {
         private readonly Image[,] pieceImages = new Image[8, 8];
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];
@@ -31,10 +34,46 @@ namespace ChessUI
             InitializeComponent();
             InitializeBoard();
 
-            gameState = new GameState(Player.White, Board.initial());
+            if (gameState == null)
+            {
+                gameState = new GameState(Player.White, Board_Base.initial());
+            }
+
             DrawBoard(gameState.Board);
             SetCursor(gameState.CurrentPlayer);
+
+            
         }
+        #region EscMenu
+        //нажатие клавиши  
+        public event EventHandler<KeyEventArgs>? Window_KeyDownEsc;
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            Window_KeyDownEsc?.Invoke(sender, e);
+        }
+
+
+        public void ShowPauseMenu(PauseMent pauseMenu)
+        {
+            MenuContainer.Content = pauseMenu;
+
+            pauseMenu.OptionSelected += option =>
+            {
+                MenuContainer.Content = null;
+                if (option == Option.Restart)
+                {
+                    RestartGame();
+                }
+            };
+        }
+
+        public bool isMenuOnScreeen()
+        {
+            return MenuContainer.Content != null;
+        }
+        #endregion
+
+
 
         // эта тема просто заполняет контейнерами для картинок щахмат
         private void InitializeBoard()
@@ -56,7 +95,7 @@ namespace ChessUI
         }
 
 
-        private void DrawBoard(Board board)
+        private void DrawBoard(Board_Base board)
         {
             for (int r = 0; r < 8; r++)
             {
@@ -202,10 +241,6 @@ namespace ChessUI
         }
 
 
-        private bool isMenuOnScreeen()
-        {
-            return MenuContainer.Content != null;
-        }
 
 
         private void ShowGameOver()
@@ -232,32 +267,15 @@ namespace ChessUI
             selectedPos = null;
             HideHighlights();
             moveCache.Clear();
-            gameState = new GameState(Player.White, Board.initial());
+            gameState = new GameState(Player.White, Board_Base.initial());
             DrawBoard(gameState.Board);
             SetCursor(gameState.CurrentPlayer);
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (!isMenuOnScreeen() && e.Key == Key.Escape)
-            {
-                ShowPauseMenu();
-            }
-        }
 
-        private void ShowPauseMenu()
-        {
-            PauseMent pauseMenu = new PauseMent();
-            MenuContainer.Content = pauseMenu;
 
-            pauseMenu.OptionSelected += option =>
-            {
-                MenuContainer.Content = null;
-                if (option == Option.Restart)
-                {
-                    RestartGame();
-                }
-            };
-        }
+       
+
+       
     }
 }

@@ -1,4 +1,5 @@
-﻿using ChessLogic.Pieces;
+﻿using ChessLogic.Boardik;
+using ChessLogic.Pieces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace ChessLogic.Moves
             };
         }
 
-        public override bool Execute(Board board)
+        public override bool Execute(Board_Base board)
         {
             Piece pawn = board[FromPos];
             board[FromPos] = null;

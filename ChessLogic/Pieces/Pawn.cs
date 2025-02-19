@@ -1,4 +1,5 @@
-﻿using ChessLogic.Moves;
+﻿using ChessLogic.Boardik;
+using ChessLogic.Moves;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,15 +37,15 @@ namespace ChessLogic.Pieces
         }
 
 
-        private static bool CanMoveTo(Position pos, Board board)
+        private static bool CanMoveTo(Position pos, Board_Base board)
         {
-            return Board.IsInside(pos) && board.isEmpty(pos);
+            return Board_Base.IsInside(pos) && board.isEmpty(pos);
         }
 
 
-        private bool CanCaptureAt(Position pos, Board board)
+        private bool CanCaptureAt(Position pos, Board_Base board)
         {
-            if (!Board.IsInside(pos) || board.isEmpty(pos))
+            if (!Board_Base.IsInside(pos) || board.isEmpty(pos))
             {
                 return false;
             }
@@ -62,7 +63,7 @@ namespace ChessLogic.Pieces
         }
 
 
-        private IEnumerable<Move> ForwardMoves(Position from, Board board)
+        private IEnumerable<Move> ForwardMoves(Position from, Board_Base board)
         {
             Position oneMovePos = from + forward;
 
@@ -89,7 +90,7 @@ namespace ChessLogic.Pieces
             }
         }
 
-        private IEnumerable<Move> DiagonalMoves(Position from, Board board)
+        private IEnumerable<Move> DiagonalMoves(Position from, Board_Base board)
         {
             foreach (Direction dir in new Direction[] { Direction.West, Direction.East })
             {
@@ -116,12 +117,12 @@ namespace ChessLogic.Pieces
             }
         }
 
-        public override IEnumerable<Move> GetMoves(Position from, Board board)
+        public override IEnumerable<Move> GetMoves(Position from, Board_Base board)
         {
             return ForwardMoves(from, board).Concat(DiagonalMoves(from, board));
         }
 
-        public override bool CanCaptureOpponentKing(Position from, Board board)
+        public override bool CanCaptureOpponentKing(Position from, Board_Base board)
         {
             return DiagonalMoves(from, board)
                 .Select(move => board[move.ToPos])

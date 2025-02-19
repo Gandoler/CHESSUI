@@ -1,9 +1,5 @@
 ﻿using ChessLogic.Moves;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ChessLogic.Boardik;
 
 namespace ChessLogic.Pieces
 {
@@ -15,11 +11,11 @@ namespace ChessLogic.Pieces
         public bool HasMoved { get; set; } = false;
 
         public abstract Piece Copy();
-        public abstract IEnumerable<Move> GetMoves(Position from, Board board);
+        public abstract IEnumerable<Move> GetMoves(Position from, Board_Base board);
 
-        protected IEnumerable<Position> MovePositionsInDir(Position from, Board board, Direction direction)
+        protected IEnumerable<Position> MovePositionsInDir(Position from, Board_Base board, Direction direction)
         {
-            for(Position pos = from + direction; Board.IsInside(pos); pos += direction)
+            for(Position pos = from + direction; Board_Base.IsInside(pos); pos += direction)
             {
                 if (board.isEmpty(pos)) {
                     yield return pos;
@@ -36,12 +32,12 @@ namespace ChessLogic.Pieces
         }
 
 
-        protected IEnumerable<Position> MovePositionsInDirs(Position from, Board board, Direction[] directions)
+        protected IEnumerable<Position> MovePositionsInDirs(Position from, Board_Base board, Direction[] directions)
         {
             return directions.SelectMany(dir => MovePositionsInDir(from, board, dir));
         }
 
-        public virtual bool CanCaptureOpponentKing(Position from, Board board)
+        public virtual bool CanCaptureOpponentKing(Position from, Board_Base board)
         {
             return GetMoves(from, board)
                 .Select(move => board[move.ToPos])

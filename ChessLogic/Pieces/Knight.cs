@@ -1,4 +1,5 @@
-﻿using ChessLogic.Moves;
+﻿using ChessLogic.Boardik;
+using ChessLogic.Moves;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,13 +39,13 @@ namespace ChessLogic.Pieces
             }
         }
 
-        private IEnumerable<Position> MovePositions(Position from, Board board)
+        private IEnumerable<Position> MovePositions(Position from, Board_Base board)
         {
-            return PotentialToPositions(from).Where(pos => Board.IsInside(pos)
+            return PotentialToPositions(from).Where(pos => Board_Base.IsInside(pos)
                 && (board.isEmpty(pos) || board[pos].Color != Color));
         }
 
-        public override IEnumerable<Move> GetMoves(Position from, Board board)
+        public override IEnumerable<Move> GetMoves(Position from, Board_Base board)
         {
             return MovePositions(from, board).Select(to => new NormalMove(from, to));
         }

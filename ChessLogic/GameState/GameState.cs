@@ -1,4 +1,5 @@
-﻿using ChessLogic.Moves;
+﻿using ChessLogic.Boardik;
+using ChessLogic.Moves;
 using ChessLogic.Pieces;
 using System;
 using System.Collections.Generic;
@@ -6,17 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessLogic
+namespace ChessLogic.GameState
 {
     public class GameState
     {
-        public Board Board { get; set; }
+        public Board_Base Board { get; set; }
         public Player CurrentPlayer { get; private set; }
-        public Result Result { get; private set; } = null;
+        public Result Result { get;  set; } = null;
 
         private int noCapptureOrPawnMoves = 0;
 
-        public GameState(Player player, Board board)
+        public GameState(Player player, Board_Base board)
         {
             CurrentPlayer = player;
             Board = board;
