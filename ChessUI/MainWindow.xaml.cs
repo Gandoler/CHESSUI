@@ -35,18 +35,20 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
+            
 
            _gameState = gameState;
-            if(_gameState == null)
-            {
-                throw new ArgumentNullException("on pustoi blyia");
-            }
-            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
 
             SetCursor(_gameState.CurrentPlayer);
-
+            this.MouseEnter += MainWindow_MouseEnter;
             
         }
+        //при первом попадании мыши подгруз
+        private void MainWindow_MouseEnter(object sender, MouseEventArgs e)
+        {
+            ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);
+        }
+
         //нажатие клавиши  
         public event EventHandler<KeyEventArgs>? Window_KeyDownEsc;
         // нажатие рестарта игры
@@ -54,8 +56,15 @@ namespace ChessUI
 
         // случился геймовер
         public event Action? Game_Over_event;
-
+        //перерисовка доски
         public event Action? ReDrawBord;
+        //включение подсветки
+        public event Action? ShowHighLight;
+        //выключенеи подсветки
+        public event Action? UnShowHiighLight;
+        
+        // изменение курсора 
+        public event Action? ChangeCursor;
 
 
         // эта тема просто заполняет контейнерами для картинок щахмат
@@ -73,6 +82,17 @@ namespace ChessUI
                     Rectangle highlight = new Rectangle();
                     highlights[r,c] = highlight;
                     HiglightGrid.Children.Add(highlight);
+                }
+            }
+        }
+        public void DrawBoard(Board_Base board)
+        {
+            for (int r = 0; r < 8; r++)
+            {
+                for (int c = 0; c < 8; c++)
+                {
+                    Piece piece = board[r, c];
+                    pieceImages[r,c].Source = Images.Instance.GetImage(piece);
                 }
             }
         }
@@ -111,17 +131,6 @@ namespace ChessUI
        
 
 
-        public void DrawBoard(Board_Base board)
-        {
-            for (int r = 0; r < 8; r++)
-            {
-                for (int c = 0; c < 8; c++)
-                {
-                    Piece piece = board[r, c];
-                    pieceImages[r,c].Source = Images.Instance.GetImage(piece);
-                }
-            }
-        }
 
 
         private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -147,10 +156,10 @@ namespace ChessUI
         private void OnToPositionSelected(Position pos)
         {
             selectedPos = null;
-            
-            HideHighlights();
 
-            if(moveCache.TryGetValue(pos, out Move move))
+            UnShowHiighLight?.Invoke();
+
+            if (moveCache.TryGetValue(pos, out Move move))
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
@@ -200,7 +209,7 @@ namespace ChessUI
             {
                 selectedPos = pos;
                 CacheMoves(moves);  
-                ShowHighlights();
+                ShowHighLight?.Invoke();
             }
 
         }
@@ -224,26 +233,6 @@ namespace ChessUI
             }
         }
 
-        private void ShowHighlights() // включает подсветку
-        {
-            Color color = Color.FromArgb(150, 125, 255, 125);
-            SolidColorBrush brush = new SolidColorBrush(color);
-
-            foreach (var pos in moveCache.Keys)
-            {
-                highlights[pos.Row, pos.Column].Fill = new SolidColorBrush(color);
-            }
-        }
-
-        private void HideHighlights()// выключает подсветку
-        {
-            foreach (var pos in moveCache.Keys)
-            {
-                highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
-            }
-        }
-
-
         private void SetCursor(Player player)
         {
             if (player == Player.White)
@@ -256,6 +245,25 @@ namespace ChessUI
             }
         }
 
+        #region design
+        public void ShowHighlights(SolidColorBrush brush) // включает подсветку
+        {
+           
+
+            foreach (var pos in moveCache.Keys)
+            {
+                highlights[pos.Row, pos.Column].Fill = brush;
+            }
+        }
+
+        public void HideHighlights()// выключает подсветку
+        {
+            foreach (var pos in moveCache.Keys)
+            {
+                highlights[pos.Row, pos.Column].Fill = Brushes.Transparent;
+            }
+        }
+        #endregion
 
 
         #region gameend
@@ -285,7 +293,7 @@ namespace ChessUI
         public void RestartGame()
         {
             selectedPos = null;
-            HideHighlights();
+            UnShowHiighLight?.Invoke();
             moveCache.Clear();
             _gameState.Restart();
             ReDrawBord?.Invoke();// было DrawBoard(_gameState.Board);

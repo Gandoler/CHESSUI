@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Net.Http.Headers;
+using System.Windows.Media;
 
 namespace ChessUI.Code
 {
@@ -25,6 +26,8 @@ namespace ChessUI.Code
             pauseMent = new PauseMent();
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
             _view = chessView;
+            Color color = Color.FromArgb(150, 125, 255, 125);
+            SolidColorBrush brush = new SolidColorBrush(color);
 
 
 
@@ -35,38 +38,34 @@ namespace ChessUI.Code
 
 
             //подписка для рестарта игры
-            _view.RestartGame_Click += _view_RestartGame_Click;
+            _view.RestartGame_Click += () => _view.RestartGame(); 
 
             // gameOver 
-            _view.Game_Over_event += _view_Game_Over_event;
+            _view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
 
 
             // Upate доски
-            _view.ReDrawBord += _view_ReDrawBord;
+            _view.ReDrawBord +=()=> _view.DrawBoard(_gameState.Board);
+
+
+            //включение подсветки
+            _view.ShowHighLight +=()=> _view.ShowHighlights(brush);
+
+
+            //выключенеи подсветки
+            _view.UnShowHiighLight += () => _view.HideHighlights();
+
+
 
         }
 
 
 
-        // Upate доски
-        private void _view_ReDrawBord()
-        {
-            _view.DrawBoard(_gameState.Board);
-        }
+       
 
 
-        // случился gameover
-        private void _view_Game_Over_event()
-        {
-            _view.ShowGameOver(_lazyGameOverMenu);
-        }
-
-        //перезапуск игры
-        private void _view_RestartGame_Click()
-        {
-            _view.RestartGame();
-        }
-
+       
+       
 
         // нажатие на esc
         private void _view_Window_KeyDown(object? sender, System.Windows.Input.KeyEventArgs e)

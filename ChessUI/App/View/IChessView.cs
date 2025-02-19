@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChessUI.Code.View
 {
@@ -18,6 +19,12 @@ namespace ChessUI.Code.View
         public event Action Game_Over_event;
         public event Action ReDrawBord;
 
+        public event Action ShowHighLight;
+        public event Action UnShowHiighLight;
+
+
+        public event Action ChangeCursor;
+
         public bool isMenuOnScreeen();
         public void ShowPauseMenu(PauseMent pauseMenu);
 
@@ -26,5 +33,9 @@ namespace ChessUI.Code.View
         public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
 
         public void DrawBoard(Board_Base board);
+
+
+        public void ShowHighlights(SolidColorBrush brush); // включает подсветку
+        public void HideHighlights();// выключает подсветку
     }
 }
