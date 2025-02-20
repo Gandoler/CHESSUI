@@ -24,6 +24,7 @@ namespace ChessUI.Code
         private Position? _selectedPos = null;
         SolidColorBrush brush;
         private readonly Dictionary<Position, Move> moveCache = new();
+        private readonly Lazy<PromotionMenu> promMenu;
 
 
         public Presenter(IChessView chessView, GameState gameState)
@@ -32,6 +33,7 @@ namespace ChessUI.Code
             _gameState = gameState;
             pauseMent = new PauseMent();
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
+            promMenu = new Lazy<PromotionMenu> (()=> new PromotionMenu(_gameState.CurrentPlayer));
             _view = chessView;
             Color color = Color.FromArgb(150, 125, 255, 125);
             brush = new SolidColorBrush(color);
@@ -67,7 +69,7 @@ namespace ChessUI.Code
             _view.BoardGrid_MouseDownEvent += _view_BoardGrid_MouseDownEvent;
 
             // временнннннная !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            _view.Tempevent += (Move v) => HandleMove(v);
+            _view.ShowChangeMenu += (Move v) => HandleMove(v);
 
         }
 
@@ -147,7 +149,7 @@ namespace ChessUI.Code
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
-                    _view.HandlePromotion(move.FromPos, move.ToPos);
+                    _view.HandlePromotion(move.FromPos, move.ToPos, promMenu.Value);
                 }
                 else
                 {

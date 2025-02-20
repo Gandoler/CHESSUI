@@ -153,20 +153,20 @@ namespace ChessUI
         }
 
        
-        public event Action<Move> Tempevent;
-        public void HandlePromotion(Position from, Position to)
+        public event Action<Move> ShowChangeMenu;
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu)
         {
             pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(_gameState.CurrentPlayer, PieceType.Pawn);
             pieceImages[from.Row, from.Column].Source = null;
 
-            PromotionMenu promMenu = new PromotionMenu(_gameState.CurrentPlayer);
+        
             MenuContainer.Content = promMenu;
 
             promMenu.PieceSelected += type =>
             {
                 MenuContainer.Content = null;
                 Move promMove = new PawnPromotion(from, to, type);
-                Tempevent?.Invoke(promMove);
+                ShowChangeMenu?.Invoke(promMove);
                 
             };
         }

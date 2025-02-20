@@ -31,7 +31,7 @@ namespace ChessUI.Code.View
 
 
         // временная щатычка енадо ьбыть аккуратным!!!!!!!!
-        public event Action<Move> Tempevent;
+        public event Action<Move> ShowChangeMenu;
 
 
         public bool isMenuOnScreeen();
@@ -53,7 +53,7 @@ namespace ChessUI.Code.View
 
         // группа по нажатию на клетку
         //public void OnToPositionSelected(Position pos);
-        public void HandlePromotion(Position from, Position to);
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu);
         //public void HandleMove(Move move);
         //public void OnFromPositionSelected(Position pos);
         public Position ToSquarePosition(Point point);
