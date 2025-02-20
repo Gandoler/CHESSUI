@@ -133,7 +133,7 @@ namespace ChessUI
         }
         #endregion
 
-        /s
+        //s
 
 
 
