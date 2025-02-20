@@ -1,5 +1,6 @@
 ﻿using ChessLogic;
 using ChessLogic.Boardik;
+using ChessLogic.GameState;
 using ChessLogic.Moves;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace ChessUI.Code.View
 
         // группа по нажатию на клетку
         //public void OnToPositionSelected(Position pos);
-        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu);
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, GameState gameState);
         //public void HandleMove(Move move);
         //public void OnFromPositionSelected(Position pos);
         public Position ToSquarePosition(Point point);

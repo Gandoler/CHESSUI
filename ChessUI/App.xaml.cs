@@ -19,7 +19,7 @@ namespace ChessUI
 
             GameState gameState = new GameState(ChessLogic.Player.White, Board_Base.initial());
 
-            var chessWindow = new MainWindow(gameState);
+            var chessWindow = new MainWindow();
             
 
                 var presenter = new Presenter(chessWindow, gameState);

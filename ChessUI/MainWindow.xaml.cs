@@ -29,17 +29,14 @@ namespace ChessUI
         private readonly Rectangle[,] highlights = new Rectangle[8, 8];  // это подсветка ее оставим тута
 
 
-        
-        private readonly GameState _gameState;
-      
+          
     
-        public MainWindow(GameState gameState)
+        public MainWindow()
         {
             InitializeComponent();
             InitializeBoard();
             
 
-           _gameState = gameState;
 
            
             this.MouseEnter += MainWindow_MouseEnter;
@@ -106,7 +103,7 @@ namespace ChessUI
 
         #endregion
 
-        #region EscMenu
+        #region EscMenu and Mouse click
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Window_KeyDownEsc?.Invoke(sender, e);
@@ -131,14 +128,6 @@ namespace ChessUI
         {
             return MenuContainer.Content != null;
         }
-        #endregion
-
-        //s
-
-
-
-
-
         // обратоька нгажатия мыши
         public void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -151,25 +140,16 @@ namespace ChessUI
             BoardGrid_MouseDownEvent?.Invoke(sender, point);
             
         }
+        #endregion
+
+
+
+
+
+
+
 
        
-        public event Action<Move> ShowChangeMenu;
-        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu)
-        {
-            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(_gameState.CurrentPlayer, PieceType.Pawn);
-            pieceImages[from.Row, from.Column].Source = null;
-
-        
-            MenuContainer.Content = promMenu;
-
-            promMenu.PieceSelected += type =>
-            {
-                MenuContainer.Content = null;
-                Move promMove = new PawnPromotion(from, to, type);
-                ShowChangeMenu?.Invoke(promMove);
-                
-            };
-        }
 
        
 
@@ -220,7 +200,24 @@ namespace ChessUI
         #endregion
 
 
-        #region gameend
+        #region gameend  and promMenu
+        public event Action<Move> ShowChangeMenu;
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, GameState gameState)
+        {
+            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(gameState.CurrentPlayer, PieceType.Pawn);
+            pieceImages[from.Row, from.Column].Source = null;
+
+        
+            MenuContainer.Content = promMenu;
+
+            promMenu.PieceSelected += type =>
+            {
+                MenuContainer.Content = null;
+                Move promMove = new PawnPromotion(from, to, type);
+                ShowChangeMenu?.Invoke(promMove);
+                
+            };
+        }
         public void ShowGameOver(GameOverMenu gameOverMenu)
         {
             GameOverMenu foruse = gameOverMenu;

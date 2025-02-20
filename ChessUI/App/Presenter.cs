@@ -149,7 +149,7 @@ namespace ChessUI.Code
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
-                    _view.HandlePromotion(move.FromPos, move.ToPos, promMenu.Value);
+                    _view.HandlePromotion(move.FromPos, move.ToPos, promMenu.Value, _gameState);
                 }
                 else
                 {
