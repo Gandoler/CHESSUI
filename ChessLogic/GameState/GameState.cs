@@ -104,6 +104,7 @@ namespace ChessLogic.GameState
         // тут просто переиницализация
         public void Restart()
         {
+            Result = null;
             CurrentPlayer = Player.White;
             Board = Board_Base.initial();
         }

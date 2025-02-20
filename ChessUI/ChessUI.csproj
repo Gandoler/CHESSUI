@@ -39,8 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="App\View\Assets\Board.png" />
-    <Resource Include="App\View\Assets\icon.ico" />
+    <Resource Include="App\View\AssetsBoard\Board.png" />
+    <Resource Include="App\View\AssetsBoard\icon.ico" />
     <Resource Include="Assets\BishopB.png" />
     <Resource Include="Assets\BishopW.png" />
     <Resource Include="Assets\Board.png" />

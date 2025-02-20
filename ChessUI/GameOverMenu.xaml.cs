@@ -24,12 +24,13 @@ namespace ChessUI
     public partial class GameOverMenu : UserControl
     {
         public event Action<Option> OptionSelected;
+        public Result result { get; set; }
         public GameOverMenu(GameState gameState)
         {
             InitializeComponent();
 
 
-            Result result = gameState.Result;
+            result = gameState.Result;
 
             if (result == null) { throw new Exception("Пустой кент"); }
             WinnerText.Text = GetWinnerText(result.Winner);

@@ -1,5 +1,6 @@
 ﻿using ChessLogic;
 using ChessLogic.Pieces;
+using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -44,7 +45,8 @@ namespace ChessUI.Singletons
         // скрытый загрузчик
         private ImageSource LoadImage(string filePath)
         {
-            return new BitmapImage(new Uri(filePath, UriKind.Relative));
+            Uri resourceUri = new Uri($"pack://application:,,,/{filePath}");
+            return new BitmapImage(resourceUri);
         }
 
         // получить картинки по цвету и типу фигуры

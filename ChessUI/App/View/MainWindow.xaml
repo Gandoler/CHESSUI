@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChessUI"
         mc:Ignorable="d"
         Title="Chess" Width="600" SizeToContent="Height"
-        Icon = "Assets/icon.ico"
+        Icon = "AssetsBoard/icon.ico"
         WindowStartupLocation="CenterScreen"
         Background="Black"
         KeyDown="Window_KeyDown">
@@ -16,7 +16,7 @@
             Height = "600"
             MouseDown = "BoardGrid_MouseDown">
             <Grid.Background>
-                <ImageBrush ImageSource="Assets/Board.png"/>
+                <ImageBrush ImageSource="AssetsBoard/Board.png"/>
             </Grid.Background>
 
             <UniformGrid x:Name="HiglightGrid"
