@@ -39,7 +39,7 @@ namespace ChessUI.Code.View
 
 
    
-        public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu);
+        public void ShowGameOver(GameOverMenu gameOverMenu);
 
         public void DrawBoard(Board_Base board);
 

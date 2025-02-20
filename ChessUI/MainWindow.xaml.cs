@@ -142,14 +142,14 @@ namespace ChessUI
         // обратоька нгажатия мыши
         public void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            
             if (isMenuOnScreeen())
             {
                 return;
             }
             Point point = e.GetPosition(BoardGrid);
             BoardGrid_MouseDownEvent?.Invoke(sender, point);
-
+            
         }
 
        
@@ -221,9 +221,9 @@ namespace ChessUI
 
 
         #region gameend
-        public void ShowGameOver(Lazy<GameOverMenu> gameOverMenu)
+        public void ShowGameOver(GameOverMenu gameOverMenu)
         {
-            GameOverMenu foruse = gameOverMenu.Value;
+            GameOverMenu foruse = gameOverMenu;
             MenuContainer.Content = foruse;
 
             foruse.OptionSelected += option =>

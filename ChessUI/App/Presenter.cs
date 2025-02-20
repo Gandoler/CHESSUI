@@ -46,7 +46,7 @@ namespace ChessUI.Code
             _view.RestartGame_Click += ()=>RestartGame();
 
             // gameOver 
-            _view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
+            //_view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
 
 
             // Upate доски
@@ -165,7 +165,7 @@ namespace ChessUI.Code
 
             if (_gameState.isGameOver())
             {
-                RestartGame();
+                _view.ShowGameOver(_lazyGameOverMenu.Value);
 
             }
         }
