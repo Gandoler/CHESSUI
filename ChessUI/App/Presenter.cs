@@ -132,7 +132,7 @@ namespace ChessUI.Code
 
             _view.HideHighlights(moveCache);
 
-            if (moveCache.TryGetValue(pos, out Move move))
+            if (moveCache.TryGetValue(pos, out var move))
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
