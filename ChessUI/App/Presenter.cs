@@ -43,24 +43,11 @@ namespace ChessUI.Code
             //подписка для обработчика клавиш
             _view.Window_KeyDownEsc += _view_Window_KeyDown;
 
-
             //подписка для рестарта игры
             _view.RestartGame_Click += ()=>RestartGame();
 
-            // gameOver 
-            //_view.Game_Over_event += () => _view.ShowGameOver(_lazyGameOverMenu);
-
-
             // Upate доски
             _view.ReDrawBord +=()=> _view.DrawBoard(_gameState.Board);
-
-
-            //включение подсветки
-            _view.ShowHighLight +=()=> _view.ShowHighlights(brush, moveCache);
-
-
-            //выключенеи подсветки
-            _view.UnShowHiighLight += () => _view.HideHighlights(moveCache);
 
             //изменение курсора 
             _view.ChangeCursor += () => _view.SetCursor(_gameState.CurrentPlayer);

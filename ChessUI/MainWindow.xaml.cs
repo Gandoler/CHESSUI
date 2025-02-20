@@ -1,20 +1,15 @@
 ﻿using ChessLogic;
+using ChessLogic.Boardik;
+using ChessLogic.GameState;
+using ChessLogic.Moves;
 using ChessLogic.Pieces;
-using System.Text;
+using ChessUI.Code.View;
+using ChessUI.Singletons;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ChessLogic.Moves;
-using ChessUI.Singletons;
-using ChessLogic.GameState;
-using ChessLogic.Boardik;
-using ChessUI.Code.View;
 
 namespace ChessUI
 {
@@ -56,14 +51,11 @@ namespace ChessUI
         // нажатие рестарта игры
         public event Action? RestartGame_Click;
 
-        // случился геймовер
-        public event Action? Game_Over_event;
         //перерисовка доски
         public event Action? ReDrawBord;
-        //включение подсветки
-        public event Action? ShowHighLight;
-        //выключенеи подсветки
-        public event Action? UnShowHiighLight;
+
+        // когда пешка задумалсь о большем
+        public event Action<Move>? ShowChangeMenu;
         
         // изменение курсора 
         public event Action? ChangeCursor;
@@ -152,7 +144,7 @@ namespace ChessUI
        
 
        
-
+        // просто вычисляет позицию
         public Position ToSquarePosition(Point point)
         {
             double squareSize = BoardGrid.ActualHeight / 8;
@@ -201,7 +193,6 @@ namespace ChessUI
 
 
         #region gameend  and promMenu
-        public event Action<Move> ShowChangeMenu;
         public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, GameState gameState)
         {
             pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(gameState.CurrentPlayer, PieceType.Pawn);
