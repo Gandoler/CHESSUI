@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace ChessUI.Code
 {
-    internal class Presenter
+    public class Presenter
     {
         private readonly IModel _model;
         private readonly IChessView _view;
