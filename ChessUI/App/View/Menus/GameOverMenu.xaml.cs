@@ -17,7 +17,7 @@ namespace ChessUI
 
 
             _result = result;
-
+            //
             if (this._result == null) { throw new Exception("Пустой кент"); }
             WinnerText.Text = GetWinnerText(this._result.Winner);
             ReasonText.Text = GetReasonText(this._result.Reason, player);
