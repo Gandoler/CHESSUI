@@ -43,7 +43,7 @@ namespace ChessUI.Code
             #region model init sub
             _model.PositionForHighlits += (s, e) => _view.ShowHighlights(brush, e.Moves);
             _model.PositionForSwithOfHighlits += (s, e) => _view.HideHighlights(e.Moves);
-            _model.HandlePromotionMove += (s, e) => _view.HandlePromotion(e.Item1.FromPos, e.Item1.ToPos, _promMenu.Value, e.Item2);
+            _model.HandlePromotionMove += (s, e) => _view.HandlePromotion(e.Move.FromPos, e.Move.ToPos, _promMenu.Value, e.Player);
             _model.GameOver += _model_GameOver;
             _model.MakeMove += _model_MakeMove;
 

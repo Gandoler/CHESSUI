@@ -14,7 +14,7 @@ namespace ChessUI.Model
     {
         public event EventHandler<HighlightEventArgs> PositionForHighlits;
         public event EventHandler<HighlightEventArgs> PositionForSwithOfHighlits;
-        public event EventHandler<(Move, Player)> HandlePromotionMove;
+        public event EventHandler<HandlePromotionMoveEventsArgs> HandlePromotionMove;
         public event EventHandler<MakeMoveEventArgs> MakeMove;
         public event Action GameOver;
         public Player CurrentPlayer { get; }

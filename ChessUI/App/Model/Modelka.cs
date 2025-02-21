@@ -23,7 +23,7 @@ namespace ChessUI.Model
 
         public event EventHandler<HighlightEventArgs>? PositionForHighlits;
         public event EventHandler<HighlightEventArgs>? PositionForSwithOfHighlits;
-        public event EventHandler<(Move, Player)>? HandlePromotionMove;
+        public event EventHandler<HandlePromotionMoveEventsArgs>? HandlePromotionMove;
         public event EventHandler<MakeMoveEventArgs>? MakeMove;
         public event Action? GameOver;
 
@@ -78,7 +78,7 @@ namespace ChessUI.Model
             {
                 if (move.Type == MoveType.PawnPromotion)
                 {
-                    HandlePromotionMove?.Invoke(this,(move, _gameState.CurrentPlayer));
+                    HandlePromotionMove?.Invoke(this,new HandlePromotionMoveEventsArgs(move, _gameState.CurrentPlayer));
                 }
                 else
                 {
