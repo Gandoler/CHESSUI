@@ -30,7 +30,7 @@ namespace ChessUI
          PauseMent _pauseMenu = new PauseMent();
             SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
 
-            var presenter = new Presenter(chessWindow, gameState, modelka,_promMenu,_lazyGameOverMenu, _pauseMenu, brush);
+            var presenter = new Presenter(chessWindow, modelka,_promMenu,_lazyGameOverMenu, _pauseMenu, brush);
             
             chessWindow.Show();
 

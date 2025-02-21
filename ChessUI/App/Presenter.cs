@@ -21,7 +21,7 @@ namespace ChessUI.Code
         private  Lazy<GameOverMenu> _lazyGameOverMenu;
         private readonly PauseMent _pauseMenu;
 
-        public Presenter(IChessView chessView, GameState gameState, IModel model,
+        public Presenter(IChessView chessView, IModel model,
                              Lazy<PromotionMenu> promMenu, Lazy<GameOverMenu> lazyGameOverMenu,
                              PauseMent pauseMenu, SolidColorBrush brush)
         {

@@ -26,11 +26,7 @@ namespace ChessUI.FactoryAndBuild.Builders
             return this;
         }
 
-        public PresenterBuilder WithGameState(GameState gameState)
-        {
-            _gameState = gameState;
-            return this;
-        }
+       
 
         public PresenterBuilder WithModelka(Modelka modelka)
         {
