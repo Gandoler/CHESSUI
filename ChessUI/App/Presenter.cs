@@ -81,7 +81,7 @@ namespace ChessUI.Code
         public void RestartGame()
         {
             Result res = _model.RestartGame();
-            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(res,_model.CurrentPlayer));
+           
      
 
         }

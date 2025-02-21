@@ -11,10 +11,12 @@ namespace ChessLogic
         public Player Winner { get; }
         public EndReason Reason { get; }
 
+        public event Action<Result>? NewResult;
         public Result(Player winner, EndReason reason)
         {
             Winner = winner;
             Reason = reason;
+            NewResult?.Invoke(this);
         }
 
         public static Result Win(Player winner)

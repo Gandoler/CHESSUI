@@ -10,21 +10,22 @@ namespace ChessUI
     public partial class GameOverMenu : UserControl
     {
         public event Action<Option>? OptionSelected;
-        private readonly Result _result;
+        public Result? _result;
         public GameOverMenu(Result result, Player player)
         {
             InitializeComponent();
 
 
             _result = result;
-            //
-            if (this._result == null) { throw new Exception("Пустой кент"); }
+            _result.NewResult += _result_NewResult;
             WinnerText.Text = GetWinnerText(this._result.Winner);
             ReasonText.Text = GetReasonText(this._result.Reason, player);
         }
 
-        
-
+        private void _result_NewResult(Result obj)
+        {
+            _result = obj;
+        }
 
         private static string GetWinnerText(Player winner)
         {
