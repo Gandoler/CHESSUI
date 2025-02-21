@@ -21,9 +21,10 @@ namespace ChessUI.FactoryAndBuild.Builders
             _factory = factory;
         }
 
-        public Presenter Build()
+        public void Build()
         {
-           return  _builder.WithChessWindow(_factory.CreateView())
+            
+             _builder.WithChessWindow(_factory.CreateView())
                 .WithModelka(_factory.CreateModel())
                 .WithPromotionMenu(_factory.CreatePromotionMenu())
                 .WithGameOverMenu(_factory.CreateGameOverMenu())

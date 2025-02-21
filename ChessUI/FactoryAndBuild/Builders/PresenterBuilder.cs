@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace ChessUI.FactoryAndBuild.Builders
 {
-    public class PresenterBuilder
+    public class PresenterBuilder: IBuilder
     {
         private MainWindow _chessWindow;
         private Modelka _modelka;
@@ -58,7 +58,11 @@ namespace ChessUI.FactoryAndBuild.Builders
 
         public Presenter Build()
         {
-            return new Presenter(_chessWindow, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
+            Presenter presenter = new Presenter(_chessWindow, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
+            _chessWindow.Show();
+            return presenter;
         }
+
+
     }
 }

@@ -15,7 +15,6 @@ namespace ChessUI.FactoryAndBuild.Builders
         public PresenterBuilder WithChessWindow(MainWindow chessWindow);
 
 
-        public PresenterBuilder WithGameState(GameState gameState);
 
         public PresenterBuilder WithModelka(Modelka modelka);
 

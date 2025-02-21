@@ -3,6 +3,8 @@ using ChessLogic.Boardik;
 using ChessLogic.GameState;
 using ChessLogic.Moves;
 using ChessUI.Code;
+using ChessUI.FactoryAndBuild.Builders;
+using ChessUI.FactoryAndBuild.Factory;
 using ChessUI.Model;
 using System.Diagnostics;
 using System.Windows;
@@ -20,19 +22,9 @@ namespace ChessUI
             base.OnStartup(e);
 
 
-            GameState gameState = new GameState(ChessLogic.Player.White, Board_Base.initial());
-                      Dictionary<Position, Move> moveCache = new();
-
-        var chessWindow = new MainWindow();
-            Modelka modelka = new Modelka(moveCache, gameState);
-               Lazy<PromotionMenu> _promMenu =   new Lazy<PromotionMenu> (()=> new PromotionMenu(gameState.CurrentPlayer));
-            Lazy<GameOverMenu> _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState.Result, gameState.CurrentPlayer));
-         PauseMent _pauseMenu = new PauseMent();
-            SolidColorBrush brush = new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
-
-            var presenter = new Presenter(chessWindow, modelka,_promMenu,_lazyGameOverMenu, _pauseMenu, brush);
-            
-            chessWindow.Show();
+            PresenterComponentsFactory factory = new();
+            PresenterBuilder builder = new();
+            Director direction = new(builder, factory);
 
         }
     }
