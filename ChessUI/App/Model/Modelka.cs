@@ -24,7 +24,7 @@ namespace ChessUI.Model
         public event EventHandler<HighlightEventArgs>? PositionForHighlits;
         public event EventHandler<HighlightEventArgs>? PositionForSwithOfHighlits;
         public event EventHandler<(Move, Player)>? HandlePromotionMove;
-        public event EventHandler<(Board_Base, Player)>? MakeMove;
+        public event EventHandler<MakeMoveEventArgs>? MakeMove;
         public event Action? GameOver;
 
 
@@ -50,7 +50,7 @@ namespace ChessUI.Model
             PositionForSwithOfHighlits?.Invoke(this, new HighlightEventArgs(_moveCache));
             _moveCache.Clear();
             _gameState.Restart();
-            MakeMove?.Invoke(this, (_gameState.Board, _gameState.CurrentPlayer));
+            MakeMove?.Invoke(this, new MakeMoveEventArgs(_gameState.Board, _gameState.CurrentPlayer));
             return _gameState.Result;
         }
 
@@ -90,7 +90,7 @@ namespace ChessUI.Model
         public void HandleMove(Move move)
         {
             _gameState.MakeMove(move);
-            MakeMove?.Invoke(this, (_gameState.Board, _gameState.CurrentPlayer));
+            MakeMove?.Invoke(this, new MakeMoveEventArgs(_gameState.Board, _gameState.CurrentPlayer));
            
 
             if (_gameState.isGameOver())

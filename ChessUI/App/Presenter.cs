@@ -72,10 +72,10 @@ namespace ChessUI.Code
 
         }
 
-        private void _model_MakeMove(object? sender, (Board_Base, Player) e)
+        private void _model_MakeMove(object? sender, MakeMoveEventArgs e)
         {
-            _view.DrawBoard(e.Item1);
-            _view.SetCursor(e.Item2);
+            _view.DrawBoard(e.Board);
+            _view.SetCursor(e.Player);
 
         }
 
