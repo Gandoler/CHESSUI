@@ -93,9 +93,9 @@ namespace ChessUI.Code
 
         public void RestartGame()
         {
-            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(_gameState));
             _selectedPos = null;
-            _model.RestartGame();
+            (Result res, Player curPlayy) = _model.RestartGame();
+            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(res,curPlayy));
             _view.HideHighlights(moveCache);
      
 

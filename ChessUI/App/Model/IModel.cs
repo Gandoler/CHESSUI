@@ -18,7 +18,7 @@ namespace ChessUI.Model
         public event Action GameOver;
 
 
-        public void RestartGame();
+        public (Result,Player) RestartGame();
         public void MouseCLickHandler(Position pos);
         public void OnFromPositionSelected(Position pos);
         public void OnToPositionSelected(Position pos);

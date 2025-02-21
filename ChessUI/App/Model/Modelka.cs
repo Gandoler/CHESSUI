@@ -41,13 +41,13 @@ namespace ChessUI.Model
             }
         }
 
-        public void RestartGame()
+        public (Result, Player) RestartGame()
         {
 
             _moveCache.Clear();
             _gameState.Restart();
             MakeMove?.Invoke(this, (_gameState.Board, _gameState.CurrentPlayer));
-
+            return (_gameState.Result, _gameState.CurrentPlayer);
         }
 
 

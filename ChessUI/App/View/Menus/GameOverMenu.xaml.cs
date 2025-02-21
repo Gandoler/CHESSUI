@@ -10,7 +10,7 @@ namespace ChessUI
     /// </summary>
     public partial class GameOverMenu : UserControl
     {
-        public event Action<Option> OptionSelected;
+        public event Action<Option>? OptionSelected;
         private readonly Result _result;
         public GameOverMenu(Result result, Player player)
         {
