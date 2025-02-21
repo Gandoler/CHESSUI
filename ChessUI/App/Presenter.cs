@@ -29,7 +29,7 @@ namespace ChessUI.Code
         private readonly Lazy<PromotionMenu> _promMenu;
         private  Lazy<GameOverMenu> _lazyGameOverMenu;
         private readonly PauseMent _pauseMenu;
-
+        GameState _gameState;
 
         public Presenter(IChessView chessView, GameState gameState, IModel model,
                              Lazy<PromotionMenu> promMenu, Lazy<GameOverMenu> lazyGameOverMenu,
@@ -44,7 +44,7 @@ namespace ChessUI.Code
             _lazyGameOverMenu = lazyGameOverMenu;
             _promMenu = promMenu;
 
-
+            _gameState = gameState; // пока не могу выкинуть
 
 
             #region model init sub

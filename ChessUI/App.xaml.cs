@@ -24,7 +24,11 @@ namespace ChessUI
 
         var chessWindow = new MainWindow();
             Modelka modelka = new Modelka(moveCache, gameState);
-            var presenter = new Presenter(chessWindow, gameState, modelka);
+               Lazy<PromotionMenu> _promMenu =   new Lazy<PromotionMenu> (()=> new PromotionMenu(gameState.CurrentPlayer));
+            Lazy<GameOverMenu> _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
+         PauseMent _pauseMenu = new PauseMent();
+
+            var presenter = new Presenter(chessWindow, gameState, modelka,_promMenu,_lazyGameOverMenu, _pauseMenu);
             
             chessWindow.Show();
 
