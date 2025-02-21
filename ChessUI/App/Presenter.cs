@@ -14,8 +14,8 @@ namespace ChessUI.Code
         private readonly IModel _model;
         private readonly IChessView _view;
 
-        
-        SolidColorBrush brush= new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
+
+        private readonly SolidColorBrush _brush;
         
         private readonly Lazy<PromotionMenu> _promMenu;
         private  Lazy<GameOverMenu> _lazyGameOverMenu;
@@ -23,8 +23,9 @@ namespace ChessUI.Code
 
         public Presenter(IChessView chessView, GameState gameState, IModel model,
                              Lazy<PromotionMenu> promMenu, Lazy<GameOverMenu> lazyGameOverMenu,
-                             PauseMent pauseMenu)
+                             PauseMent pauseMenu, SolidColorBrush brush)
         {
+            _brush = brush;
             _view = chessView;
             _model = model;
             _pauseMenu = pauseMenu;
