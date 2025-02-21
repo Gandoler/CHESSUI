@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="App\Model\**" />
-    <EmbeddedResource Remove="App\Model\**" />
-    <None Remove="App\Model\**" />
-    <Page Remove="App\Model\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Assets\BishopB.png" />
     <None Remove="Assets\BishopW.png" />
     <None Remove="Assets\Board.png" />

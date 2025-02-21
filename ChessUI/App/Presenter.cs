@@ -12,6 +12,8 @@ using System.Net.Http.Headers;
 using System.Windows.Media;
 using System.Windows;
 using ChessLogic.Moves;
+using ChessUI.App.Model;
+using ChessUI.Model;
 
 namespace ChessUI.Code
 {
@@ -27,7 +29,7 @@ namespace ChessUI.Code
         private readonly Lazy<PromotionMenu> promMenu;
 
 
-        public Presenter(IChessView chessView, GameState gameState)
+        public Presenter(IChessView chessView, GameState gameState, IModel model)
         {
             // первый пупсик которого перенесли
             _gameState = gameState;
@@ -39,7 +41,7 @@ namespace ChessUI.Code
             brush = new SolidColorBrush(color);
 
 
-
+            #region view init sub
             //подписка для обработчика клавиш
             _view.Window_KeyDownEsc += _view_Window_KeyDown;
 
@@ -57,6 +59,7 @@ namespace ChessUI.Code
 
             // временнннннная !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             _view.ShowChangeMenu += (Move v) => HandleMove(v);
+            #endregion
 
         }
 
