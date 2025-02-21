@@ -17,9 +17,11 @@ namespace ChessUI.Model
         }
 
 
+        public event EventHandler<HighlightEventArgs> PositionForHighlits;
+
 
         // попытка перенести мув кеш
-        private void CacheMoves(IEnumerable<Move> moves)
+        public void CacheMoves(IEnumerable<Move> moves)
         {
             _moveCache.Clear();
 
@@ -37,6 +39,7 @@ namespace ChessUI.Model
             {
                 _selectedPos = pos;
                 CacheMoves(moves);
+                PositionForHighlits?.Invoke(this, new HighlightEventArgs(_moveCache));
                 _view.ShowHighlights(brush, _moveCache);
             }
 
