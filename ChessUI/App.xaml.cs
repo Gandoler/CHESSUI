@@ -25,7 +25,7 @@ namespace ChessUI
             PresenterComponentsFactory factory = new();
             PresenterBuilder builder = new();
             Director direction = new(builder, factory);
-
+            direction.Build();
         }
     }
 

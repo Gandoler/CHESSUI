@@ -61,6 +61,8 @@ namespace ChessUI.FactoryAndBuild.Builders
             Presenter presenter = new Presenter(_chessWindow, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
             _chessWindow.Show();
             return presenter;
+            //return new Presenter(_chessWindow, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
+
         }
 
 

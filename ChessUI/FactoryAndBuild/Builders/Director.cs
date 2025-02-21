@@ -32,7 +32,15 @@ namespace ChessUI.FactoryAndBuild.Builders
                 .WithBrush(new SolidColorBrush(Color.FromArgb(150, 125, 255, 125)))
                 .Build();
 
-
+            //MainWindow mainWindow = _factory.CreateView();
+            //_builder.WithChessWindow(mainWindow)
+            //   .WithModelka(_factory.CreateModel())
+            //   .WithPromotionMenu(_factory.CreatePromotionMenu())
+            //   .WithGameOverMenu(_factory.CreateGameOverMenu())
+            //   .WithPauseMenu(_factory.CreatePauseMenu())
+            //   .WithBrush(new SolidColorBrush(Color.FromArgb(150, 125, 255, 125)))
+            //   .Build();
+            //return mainWindow;
         }
     }
 }
