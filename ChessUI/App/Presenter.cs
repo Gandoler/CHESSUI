@@ -12,14 +12,16 @@ using System.Net.Http.Headers;
 using System.Windows.Media;
 using System.Windows;
 using ChessLogic.Moves;
-using ChessUI.App.Model;
 using ChessUI.Model;
 
 namespace ChessUI.Code
 {
     internal class Presenter
     {
+        private readonly IModel _model;
         private readonly IChessView _view;
+
+        
         private readonly GameState _gameState;
         private readonly PauseMent pauseMent;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
@@ -31,12 +33,15 @@ namespace ChessUI.Code
 
         public Presenter(IChessView chessView, GameState gameState, IModel model)
         {
+            _view = chessView;
+            _model = model;
+
+
             // первый пупсик которого перенесли
             _gameState = gameState;
             pauseMent = new PauseMent();
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
             promMenu = new Lazy<PromotionMenu> (()=> new PromotionMenu(_gameState.CurrentPlayer));
-            _view = chessView;
             Color color = Color.FromArgb(150, 125, 255, 125);
             brush = new SolidColorBrush(color);
 
