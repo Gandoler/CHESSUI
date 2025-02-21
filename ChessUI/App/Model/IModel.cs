@@ -1,5 +1,6 @@
 ﻿using ChessLogic;
 using ChessLogic.Boardik;
+using ChessLogic.GameState;
 using ChessLogic.Moves;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,10 @@ namespace ChessUI.Model
         public event EventHandler<(Move, Player)> HandlePromotionMove;
         public event EventHandler<(Board_Base, Player)> MakeMove;
         public event Action GameOver;
+        public Player CurrentPlayer { get; }
+        public Board_Base GetBoard { get ; }
 
-
-        public (Result,Player) RestartGame();
+        public Result RestartGame();
         public void MouseCLickHandler(Position pos);
         public void OnFromPositionSelected(Position pos);
         public void OnToPositionSelected(Position pos);

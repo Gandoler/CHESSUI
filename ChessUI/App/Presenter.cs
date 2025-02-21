@@ -22,13 +22,11 @@ namespace ChessUI.Code
         private readonly IChessView _view;
 
         
-        private Position? _selectedPos = null;
         SolidColorBrush brush= new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
         
         private readonly Lazy<PromotionMenu> _promMenu;
         private  Lazy<GameOverMenu> _lazyGameOverMenu;
         private readonly PauseMent _pauseMenu;
-        GameState _gameState;
 
         public Presenter(IChessView chessView, GameState gameState, IModel model,
                              Lazy<PromotionMenu> promMenu, Lazy<GameOverMenu> lazyGameOverMenu,
@@ -36,14 +34,10 @@ namespace ChessUI.Code
         {
             _view = chessView;
             _model = model;
-
-
-            // первый пупсик которого перенесли
             _pauseMenu = pauseMenu;
             _lazyGameOverMenu = lazyGameOverMenu;
             _promMenu = promMenu;
 
-            _gameState = gameState; // пока не могу выкинуть
 
 
             #region model init sub
@@ -64,10 +58,10 @@ namespace ChessUI.Code
             _view.RestartGame_Click += ()=>RestartGame();
 
             // Upate доски
-            _view.ReDrawBord +=()=> _view.DrawBoard(_gameState.Board);
+            _view.ReDrawBord +=()=> _view.DrawBoard(_model.GetBoard);
 
             //изменение курсора 
-            _view.ChangeCursor += () => _view.SetCursor(_gameState.CurrentPlayer);
+            _view.ChangeCursor += () => _view.SetCursor(_model.CurrentPlayer);
 
             //при нажатии на клекту
             _view.BoardGrid_MouseDownEvent += _view_BoardGrid_MouseDownEvent;
@@ -92,9 +86,8 @@ namespace ChessUI.Code
 
         public void RestartGame()
         {
-            _selectedPos = null;
-            (Result res, Player curPlayy) = _model.RestartGame();
-            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(res,curPlayy));
+            Result res = _model.RestartGame();
+            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(res,_model.CurrentPlayer));
      
 
         }

@@ -11,6 +11,9 @@ namespace ChessUI.Model
         private readonly GameState _gameState; // надо будет через интерфейс
         private Position? _selectedPos = null;
 
+        public Player CurrentPlayer { get { return _gameState.CurrentPlayer; } }
+        public Board_Base GetBoard { get { return _gameState.Board; } }
+
         public Modelka(Dictionary<Position, Move> moveCache, GameState gameState)
         {
             _moveCache = moveCache;
@@ -41,14 +44,14 @@ namespace ChessUI.Model
             }
         }
 
-        public (Result, Player) RestartGame()
+        public Result RestartGame()
         {
-
+            _selectedPos = null;
             PositionForSwithOfHighlits?.Invoke(this, new HighlightEventArgs(_moveCache));
             _moveCache.Clear();
             _gameState.Restart();
             MakeMove?.Invoke(this, (_gameState.Board, _gameState.CurrentPlayer));
-            return (_gameState.Result, _gameState.CurrentPlayer);
+            return _gameState.Result;
         }
 
 
@@ -95,6 +98,9 @@ namespace ChessUI.Model
                 GameOver?.Invoke();
             }
         }
+
+
+       
         private void CacheMoves(IEnumerable<Move> moves)
         {
             _moveCache.Clear();
