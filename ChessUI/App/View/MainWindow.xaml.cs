@@ -1,6 +1,5 @@
 ﻿using ChessLogic;
 using ChessLogic.Boardik;
-using ChessLogic.GameState;
 using ChessLogic.Moves;
 using ChessLogic.Pieces;
 using ChessUI.Code.View;

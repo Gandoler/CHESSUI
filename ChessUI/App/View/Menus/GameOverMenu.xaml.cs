@@ -1,5 +1,4 @@
 ﻿using ChessLogic;
-using ChessLogic.GameState;
 using System.Windows;
 using System.Windows.Controls;
 

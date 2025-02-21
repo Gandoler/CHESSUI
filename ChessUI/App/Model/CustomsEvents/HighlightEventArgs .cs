@@ -1,10 +1,5 @@
-﻿using ChessLogic.Moves;
-using ChessLogic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChessLogic;
+using ChessLogic.Moves;
 
 namespace ChessUI.Model
 {

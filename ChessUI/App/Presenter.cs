@@ -1,18 +1,11 @@
-﻿using ChessLogic.Boardik;
-using ChessLogic;
+﻿using ChessLogic;
 using ChessLogic.GameState;
-using ChessUI.Code.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Net.Http.Headers;
-using System.Windows.Media;
-using System.Windows;
 using ChessLogic.Moves;
+using ChessUI.Code.View;
 using ChessUI.Model;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChessUI.Code
 {
