@@ -11,17 +11,17 @@ namespace ChessUI
     public partial class GameOverMenu : UserControl
     {
         public event Action<Option> OptionSelected;
-        public Result result { get; set; }
-        public GameOverMenu(GameState gameState)
+        private readonly Result _result;
+        public GameOverMenu(Result result, Player player)
         {
             InitializeComponent();
 
 
-            result = gameState.Result;
+            _result = result;
 
-            if (result == null) { throw new Exception("Пустой кент"); }
-            WinnerText.Text = GetWinnerText(result.Winner);
-            ReasonText.Text = GetReasonText(result.Reason, gameState.CurrentPlayer);
+            if (this._result == null) { throw new Exception("Пустой кент"); }
+            WinnerText.Text = GetWinnerText(this._result.Winner);
+            ReasonText.Text = GetReasonText(this._result.Reason, player);
         }
 
         
