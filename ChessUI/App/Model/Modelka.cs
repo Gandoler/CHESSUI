@@ -44,6 +44,7 @@ namespace ChessUI.Model
         public (Result, Player) RestartGame()
         {
 
+            PositionForSwithOfHighlits?.Invoke(this, new HighlightEventArgs(_moveCache));
             _moveCache.Clear();
             _gameState.Restart();
             MakeMove?.Invoke(this, (_gameState.Board, _gameState.CurrentPlayer));

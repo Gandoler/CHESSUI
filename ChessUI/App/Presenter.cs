@@ -24,7 +24,6 @@ namespace ChessUI.Code
         
         private Position? _selectedPos = null;
         SolidColorBrush brush= new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
-        private readonly Dictionary<Position, Move> moveCache = new();
         
         private readonly Lazy<PromotionMenu> _promMenu;
         private  Lazy<GameOverMenu> _lazyGameOverMenu;
@@ -50,7 +49,7 @@ namespace ChessUI.Code
             #region model init sub
             _model.PositionForHighlits += (s, e) => _view.ShowHighlights(brush, e.Moves);
             _model.PositionForSwithOfHighlits += (s, e) => _view.HideHighlights(e.Moves);
-            _model.HandlePromotionMove += (s, e) => _view.HandlePromotion(e.Item1.FromPos, e.Item1.ToPos, promMenu.Value, e.Item2);
+            _model.HandlePromotionMove += (s, e) => _view.HandlePromotion(e.Item1.FromPos, e.Item1.ToPos, _promMenu.Value, e.Item2);
             _model.GameOver += _model_GameOver;
             _model.MakeMove += _model_MakeMove;
 
@@ -96,7 +95,6 @@ namespace ChessUI.Code
             _selectedPos = null;
             (Result res, Player curPlayy) = _model.RestartGame();
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(res,curPlayy));
-            _view.HideHighlights(moveCache);
      
 
         }
