@@ -8,13 +8,13 @@ namespace ChessUI.Model
     public class Modelka: IModel
     {
         private readonly Dictionary<Position, Move> _moveCache;
-        private readonly GameState _gameState; // надо будет через интерфейс
+        private readonly IGameState _gameState; // надо будет через интерфейс
         private Position? _selectedPos = null;
 
         public Player CurrentPlayer { get { return _gameState.CurrentPlayer; } }
         public Board_Base GetBoard { get { return _gameState.Board; } }
 
-        public Modelka(Dictionary<Position, Move> moveCache, GameState gameState)
+        public Modelka(Dictionary<Position, Move> moveCache, IGameState gameState)
         {
             _moveCache = moveCache;
             _gameState = gameState;

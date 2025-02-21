@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace ChessLogic.GameState
 {
-    public class GameState
+    public class GameState: IGameState
     {
         public Board_Base Board { get; set; }
-        public Player CurrentPlayer { get; private set; }
+        public Player CurrentPlayer { get;  set; }
         public Result Result { get;  set; } = null;
 
         private int noCapptureOrPawnMoves = 0;
