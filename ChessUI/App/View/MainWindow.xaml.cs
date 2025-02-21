@@ -193,9 +193,9 @@ namespace ChessUI
 
 
         #region gameend  and promMenu
-        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, GameState gameState)
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, Player player)
         {
-            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(gameState.CurrentPlayer, PieceType.Pawn);
+            pieceImages[to.Row, to.Column].Source = Images.Instance.GetImage(player, PieceType.Pawn);
             pieceImages[from.Row, from.Column].Source = null;
 
         

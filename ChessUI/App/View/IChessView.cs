@@ -25,7 +25,7 @@ namespace ChessUI.Code.View
         public void ShowHighlights(SolidColorBrush brush, Dictionary<Position, Move> keyValuePairs);
         public void HideHighlights(Dictionary<Position, Move> keyValuePairs);
         public void SetCursor(Player player);
-        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, GameState gameState);
+        public void HandlePromotion(Position from, Position to, PromotionMenu promMenu, Player player);
         public Position ToSquarePosition(Point point);
     }
 }

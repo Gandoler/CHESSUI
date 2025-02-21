@@ -22,28 +22,39 @@ namespace ChessUI.Code
         private readonly IChessView _view;
 
         
-        private readonly GameState _gameState;
-        private readonly PauseMent pauseMent;
-        private Lazy<GameOverMenu> _lazyGameOverMenu;
         private Position? _selectedPos = null;
-        SolidColorBrush brush;
+        SolidColorBrush brush= new SolidColorBrush(Color.FromArgb(150, 125, 255, 125));
         private readonly Dictionary<Position, Move> moveCache = new();
-        private readonly Lazy<PromotionMenu> promMenu;
+        
+        private readonly Lazy<PromotionMenu> _promMenu;
+        private  Lazy<GameOverMenu> _lazyGameOverMenu;
+        private readonly PauseMent _pauseMenu;
 
 
-        public Presenter(IChessView chessView, GameState gameState, IModel model)
+        public Presenter(IChessView chessView, GameState gameState, IModel model,
+                             Lazy<PromotionMenu> promMenu, Lazy<GameOverMenu> lazyGameOverMenu,
+                             PauseMent pauseMenu)
         {
             _view = chessView;
             _model = model;
 
 
             // первый пупсик которого перенесли
-            _gameState = gameState;
-            pauseMent = new PauseMent();
-            _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(gameState));
-            promMenu = new Lazy<PromotionMenu> (()=> new PromotionMenu(_gameState.CurrentPlayer));
-            Color color = Color.FromArgb(150, 125, 255, 125);
-            brush = new SolidColorBrush(color);
+            _pauseMenu = pauseMenu;
+            _lazyGameOverMenu = lazyGameOverMenu;
+            _promMenu = promMenu;
+
+
+
+
+            #region model init sub
+            _model.PositionForHighlits += (s, e) => _view.ShowHighlights(brush, e.Moves);
+            _model.PositionForSwithOfHighlits += (s, e) => _view.HideHighlights(e.Moves);
+            _model.HandlePromotionMove += (s, e) => _view.HandlePromotion(e.Item1.FromPos, e.Item1.ToPos, promMenu.Value, e.Item2);
+            _model.GameOver += _model_GameOver;
+            _model.MakeMove += _model_MakeMove;
+
+            #endregion
 
 
             #region view init sub
@@ -63,23 +74,30 @@ namespace ChessUI.Code
             _view.BoardGrid_MouseDownEvent += _view_BoardGrid_MouseDownEvent;
 
             // временнннннная !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            _view.ShowChangeMenu += (Move v) => HandleMove(v);
+            _view.ShowChangeMenu += (Move v) => _model.HandleMove(v);
             #endregion
 
         }
 
+        private void _model_MakeMove(object? sender, (Board_Base, Player) e)
+        {
+            _view.DrawBoard(e.Item1);
+            _view.SetCursor(e.Item2);
 
+        }
+
+        private void _model_GameOver()
+        {
+            _view.ShowGameOver(_lazyGameOverMenu.Value);
+        }
 
         public void RestartGame()
         {
             _lazyGameOverMenu = new Lazy<GameOverMenu>(() => new GameOverMenu(_gameState));
             _selectedPos = null;
-
-            moveCache.Clear();
+            _model.RestartGame();
             _view.HideHighlights(moveCache);
-            _gameState.Restart();
-            _view.DrawBoard(_gameState.Board);
-            _view.SetCursor(_gameState.CurrentPlayer);
+     
 
         }
 
@@ -89,7 +107,7 @@ namespace ChessUI.Code
         {
             if (!_view.isMenuOnScreeen() && e.Key == Key.Escape)
             {
-                _view.ShowPauseMenu(pauseMent);
+                _view.ShowPauseMenu(_pauseMenu);
             }
         }
 
@@ -101,75 +119,8 @@ namespace ChessUI.Code
         {
             Position pos = _view.ToSquarePosition(point);
 
-            if (_selectedPos == null)
-            {
-                OnFromPositionSelected(pos);
-            }
-            else
-            {
-                OnToPositionSelected(pos);
-            }
+            _model.MouseCLickHandler(pos);
         }
-
-
-        // попытка перенести мув кеш
-        private void CacheMoves(IEnumerable<Move> moves)
-        {
-            moveCache.Clear();
-
-            foreach (var VARIABLE in moves)
-            {
-                moveCache[VARIABLE.ToPos] = VARIABLE;
-            }
-        }
-
-        public void OnFromPositionSelected(Position pos)
-        {
-            IEnumerable<Move> moves = _gameState.LegalMovesForPiece(pos);
-
-            if (moves.Any())
-            {
-                _selectedPos = pos;
-                CacheMoves(moves);
-                _view.ShowHighlights(brush, moveCache);
-            }
-
-        }
-
-        public void OnToPositionSelected(Position pos)
-        {
-            _selectedPos = null;
-
-            _view.HideHighlights(moveCache);
-
-            if (moveCache.TryGetValue(pos, out var move))
-            {
-                if (move.Type == MoveType.PawnPromotion)
-                {
-                    _view.HandlePromotion(move.FromPos, move.ToPos, promMenu.Value, _gameState);
-                }
-                else
-                {
-                    HandleMove(move);
-                }
-            }
-        }
-
-        public void HandleMove(Move move)
-        {
-            _gameState.MakeMove(move);
-            _view.DrawBoard(_gameState.Board);
-            _view.SetCursor(_gameState.CurrentPlayer);
-
-
-            if (_gameState.isGameOver())
-            {
-                _view.ShowGameOver(_lazyGameOverMenu.Value);
-
-            }
-        }
-
-
 
         #endregion 
 
