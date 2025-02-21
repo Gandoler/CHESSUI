@@ -1,4 +1,6 @@
 ﻿using ChessLogic;
+using ChessLogic.GameState;
+using ChessUI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,12 @@ namespace ChessUI.FactoryAndBuild.Factory
 {
     interface IPresenterComponentsFactory
     {
-        Lazy<PromotionMenu> CreatePromotionMenu(Player currentPlayer);
-        Lazy<GameOverMenu> CreateGameOverMenu(GameResult result, Player currentPlayer);
+        
+        Lazy<PromotionMenu> CreatePromotionMenu();
+        Lazy<GameOverMenu> CreateGameOverMenu();
         PauseMent CreatePauseMenu();
+
+        Modelka CreateModel();
+        MainWindow CreateView();
     }
 }
