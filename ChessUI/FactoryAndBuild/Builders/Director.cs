@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace ChessUI.FactoryAndBuild.Builders
 {
@@ -22,8 +23,14 @@ namespace ChessUI.FactoryAndBuild.Builders
 
         public Presenter Build()
         {
-            _builder.WithChessWindow(_factory.CreateView())
-                .WithGameState(_factory
+           return  _builder.WithChessWindow(_factory.CreateView())
+                .WithModelka(_factory.CreateModel())
+                .WithPromotionMenu(_factory.CreatePromotionMenu())
+                .WithGameOverMenu(_factory.CreateGameOverMenu())
+                .WithPauseMenu(_factory.CreatePauseMenu())
+                .WithBrush(new SolidColorBrush(Color.FromArgb(150, 125, 255, 125)))
+                .Build();
+
 
         }
     }

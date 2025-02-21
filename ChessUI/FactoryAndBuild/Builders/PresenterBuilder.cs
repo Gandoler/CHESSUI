@@ -13,7 +13,6 @@ namespace ChessUI.FactoryAndBuild.Builders
     public class PresenterBuilder
     {
         private MainWindow _chessWindow;
-        private GameState _gameState;
         private Modelka _modelka;
         private Lazy<PromotionMenu> _promMenu;
         private Lazy<GameOverMenu> _lazyGameOverMenu;
@@ -26,7 +25,6 @@ namespace ChessUI.FactoryAndBuild.Builders
             return this;
         }
 
-       
 
         public PresenterBuilder WithModelka(Modelka modelka)
         {
@@ -60,7 +58,7 @@ namespace ChessUI.FactoryAndBuild.Builders
 
         public Presenter Build()
         {
-            return new Presenter(_chessWindow, _gameState, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
+            return new Presenter(_chessWindow, _modelka, _promMenu, _lazyGameOverMenu, _pauseMenu, _brush);
         }
     }
 }
